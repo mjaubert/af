@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leads Manager → Clay</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f0f13; color: #e2e8f0; min-height: 100vh; }
+
+  header { background: #1a1a24; border-bottom: 1px solid #2d2d3d; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; }
+  header h1 { font-size: 18px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 10px; }
+  header h1 span { background: linear-gradient(135deg, #6366f1, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .badge { background: #6366f1; color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 999px; font-weight: 600; -webkit-text-fill-color: #fff; }
+
+  .toolbar { display: flex; align-items: center; gap: 10px; padding: 14px 24px; background: #15151f; border-bottom: 1px solid #2d2d3d; flex-wrap: wrap; }
+  .webhook-section { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 260px; }
+  .webhook-section label { font-size: 12px; color: #94a3b8; white-space: nowrap; }
+  .webhook-input { flex: 1; background: #1e1e2e; border: 1px solid #3d3d5c; border-radius: 8px; padding: 7px 12px; color: #e2e8f0; font-size: 13px; outline: none; transition: border .2s; }
+  .webhook-input:focus { border-color: #6366f1; }
+  .webhook-input::placeholder { color: #4a4a6a; }
+
+  .btn { display: inline-flex; align-items: center; gap: 7px; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: all .2s; white-space: nowrap; }
+  .btn-ghost { background: #1e1e2e; color: #94a3b8; border: 1px solid #3d3d5c; }
+  .btn-ghost:hover { background: #2a2a3e; color: #e2e8f0; border-color: #6366f1; }
+  .btn-primary { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; }
+  .btn-primary:hover { opacity: .9; transform: translateY(-1px); box-shadow: 0 4px 15px rgba(99,102,241,.4); }
+  .btn-primary:disabled { opacity: .4; cursor: not-allowed; transform: none; box-shadow: none; }
+  .btn-danger { background: #1e1e2e; color: #f87171; border: 1px solid #3d3d5c; }
+  .btn-danger:hover { background: #2a1a1a; border-color: #f87171; }
+
+  .table-wrap { overflow-x: auto; padding: 0 24px 16px; margin-top: 16px; }
+  table { width: 100%; border-collapse: collapse; min-width: 600px; }
+  thead tr { background: #1a1a24; }
+  th { padding: 10px 12px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #64748b; border-bottom: 1px solid #2d2d3d; white-space: nowrap; }
+  th.required::after { content: ' *'; color: #f87171; }
+
+  tbody tr { border-bottom: 1px solid #1e1e2e; transition: background .15s; }
+  tbody tr:hover { background: #1a1a28; }
+  tbody tr.row-error { background: #1f1010; border-left: 3px solid #f87171; }
+  tbody tr.row-ok { background: #0d1f16; border-left: 3px solid #34d399; }
+
+  td { padding: 6px 8px; vertical-align: middle; }
+  td.num { color: #4a4a6a; font-size: 12px; text-align: center; width: 36px; }
+
+  .cell-input { width: 100%; background: transparent; border: 1px solid transparent; border-radius: 6px; padding: 6px 8px; color: #e2e8f0; font-size: 13px; outline: none; transition: all .15s; }
+  .cell-input:hover { border-color: #3d3d5c; background: #1e1e2e; }
+  .cell-input:focus { border-color: #6366f1; background: #1e1e2e; }
+  .cell-input.invalid { border-color: #f87171 !important; background: #1f1010 !important; }
+  .cell-input::placeholder { color: #3d3d5c; }
+
+  td.status-cell { width: 36px; text-align: center; font-size: 16px; }
+  td.action-cell { width: 40px; text-align: center; }
+  .del-btn { background: none; border: none; cursor: pointer; color: #4a4a6a; font-size: 16px; padding: 4px 8px; border-radius: 6px; transition: all .15s; line-height: 1; }
+  .del-btn:hover { color: #f87171; background: #2a1a1a; }
+
+  .footer-bar { display: flex; align-items: center; justify-content: space-between; padding: 12px 24px; background: #15151f; border-top: 1px solid #2d2d3d; font-size: 12px; color: #64748b; flex-wrap: wrap; gap: 8px; }
+
+  .toast-wrap { position: fixed; bottom: 24px; right: 24px; display: flex; flex-direction: column; gap: 8px; z-index: 999; }
+  .toast { padding: 12px 18px; border-radius: 10px; font-size: 13px; font-weight: 500; box-shadow: 0 4px 20px rgba(0,0,0,.5); animation: slideIn .3s ease; max-width: 320px; }
+  .toast.success { background: #064e3b; color: #34d399; border: 1px solid #065f46; }
+  .toast.error { background: #450a0a; color: #f87171; border: 1px solid #7f1d1d; }
+  .toast.info { background: #1e1e3e; color: #a5b4fc; border: 1px solid #3730a3; }
+  @keyframes slideIn { from { transform: translateX(40px); opacity:0; } to { transform: none; opacity:1; } }
+
+  .empty-state { text-align: center; padding: 48px 24px; color: #4a4a6a; }
+  .empty-state p { font-size: 14px; margin-top: 8px; }
+
+  #csv-input { display: none; }
+  .progress-bar { height: 3px; background: #1e1e2e; position: relative; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, #6366f1, #8b5cf6); width: 0%; transition: width .3s; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🗂 Leads Manager <span>→ Clay</span></h1>
+  <span class="badge" id="count-badge">0 leads</span>
+</header>
+
+<div class="toolbar">
+  <div class="webhook-section">
+    <label>Webhook Clay :</label>
+    <input class="webhook-input" id="webhook-url" type="url"
+      value="https://api.clay.com/v3/sources/webhook/pull-in-data-from-a-webhook-be430a93-c9a6-4222-832b-fff68466e1ee"
+    />
+  </div>
+  <button class="btn btn-ghost" onclick="addRow()">＋ Ajouter une ligne</button>
+  <button class="btn btn-ghost" onclick="document.getElementById('csv-input').click()">📂 Importer CSV</button>
+  <input type="file" id="csv-input" accept=".csv" onchange="importCSV(event)">
+  <button class="btn btn-danger" onclick="clearAll()">🗑 Tout effacer</button>
+  <button class="btn btn-primary" id="send-btn" onclick="sendToClay()" disabled>🚀 Envoyer vers Clay</button>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+
+<div class="table-wrap">
+  <table id="leads-table">
+    <thead>
+      <tr>
+        <th style="width:36px">#</th>
+        <th class="required">Prénom</th>
+        <th class="required">Nom</th>
+        <th class="required">LinkedIn URL (Personne)</th>
+        <th class="required">Entreprise</th>
+        <th class="required">LinkedIn URL (Entreprise)</th>
+        <th style="width:36px"></th>
+        <th style="width:40px"></th>
+      </tr>
+    </thead>
+    <tbody id="leads-body"></tbody>
+  </table>
+  <div class="empty-state" id="empty-state">
+    <div style="font-size:40px">📋</div>
+    <p>Aucun lead. Ajoutez une ligne ou importez un CSV.</p>
+  </div>
+</div>
+
+<div class="footer-bar">
+  <span id="footer-info">0 lead · 0 valide · 0 incomplet</span>
+  <span>Champs requis : Prénom, Nom, LinkedIn URL, Entreprise, LinkedIn Company URL</span>
+</div>
+
+<div class="toast-wrap" id="toast-wrap"></div>
+
+<script>
+let leads = [];
+let idCounter = 0;
+
+const FIELDS = ['firstName','lastName','linkedinUrl','company','companyLinkedinUrl'];
+const LABELS = { firstName:'Prénom', lastName:'Nom', linkedinUrl:'LinkedIn URL (Personne)', company:'Entreprise', companyLinkedinUrl:'LinkedIn Company URL' };
+const PLACEHOLDERS = { firstName:'Jean', lastName:'Dupont', linkedinUrl:'https://linkedin.com/in/...', company:'Acme Corp', companyLinkedinUrl:'https://linkedin.com/company/...' };
+
+function addRow(data = {}) {
+  const row = { id: ++idCounter, firstName:'', lastName:'', linkedinUrl:'', company:'', companyLinkedinUrl:'', status:'idle', ...data };
+  leads.push(row);
+  renderTable();
+}
+
+function removeRow(id) {
+  leads = leads.filter(l => l.id !== id);
+  renderTable();
+}
+
+function clearAll() {
+  if (leads.length === 0) return;
+  if (!confirm('Effacer tous les leads ?')) return;
+  leads = [];
+  renderTable();
+}
+
+function updateLive(id, field, el) {
+  const lead = leads.find(l => l.id === id);
+  if (!lead) return;
+  lead[field] = el.value;
+  if (lead._touched) el.classList.toggle('invalid', el.value.trim() === '');
+  updateFooter(); updateSendBtn(); updateBadge();
+}
+
+function touchField(id, field, el) {
+  const lead = leads.find(l => l.id === id);
+  if (!lead) return;
+  lead._touched = true;
+  lead[field] = el.value.trim();
+  el.value = lead[field];
+  el.classList.toggle('invalid', lead[field] === '');
+  updateFooter(); updateSendBtn();
+}
+
+function isValid(lead) { return FIELDS.every(f => lead[f] && lead[f].trim() !== ''); }
+
+function esc(s) { return (s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+
+function renderTable() {
+  const body = document.getElementById('leads-body');
+  const empty = document.getElementById('empty-state');
+  empty.style.display = leads.length === 0 ? 'block' : 'none';
+
+  body.innerHTML = leads.map((lead, i) => {
+    const valid = isValid(lead);
+    const rowClass = lead.status === 'sent' ? 'row-ok' : lead.status === 'error' ? 'row-error' : '';
+    const statusIcon = lead.status === 'sent' ? '✅' : lead.status === 'error' ? '❌' : lead.status === 'sending' ? '⏳' : (valid ? '🟢' : '⚪');
+
+    return `<tr class="${rowClass}" id="row-${lead.id}">
+      <td class="num">${i+1}</td>
+      ${FIELDS.map(f => {
+        const inv = lead._touched && lead[f] === '' ? 'invalid' : '';
+        return `<td><input class="cell-input ${inv}" value="${esc(lead[f])}" placeholder="${PLACEHOLDERS[f]}"
+          oninput="updateLive(${lead.id},'${f}',this)"
+          onblur="touchField(${lead.id},'${f}',this)"
+        /></td>`;
+      }).join('')}
+      <td class="status-cell">${statusIcon}</td>
+      <td class="action-cell"><button class="del-btn" onclick="removeRow(${lead.id})" title="Supprimer">✕</button></td>
+    </tr>`;
+  }).join('');
+
+  updateFooter(); updateSendBtn(); updateBadge();
+}
+
+function updateFooter() {
+  const valid = leads.filter(isValid).length;
+  const invalid = leads.length - valid;
+  document.getElementById('footer-info').textContent = `${leads.length} lead${leads.length>1?'s':''} · ${valid} valide${valid>1?'s':''} · ${invalid} incomplet${invalid>1?'s':''}`;
+}
+
+function updateBadge() {
+  document.getElementById('count-badge').textContent = `${leads.length} lead${leads.length>1?'s':''}`;
+}
+
+function updateSendBtn() {
+  const btn = document.getElementById('send-btn');
+  const wh = document.getElementById('webhook-url').value.trim();
+  btn.disabled = !(leads.length > 0 && leads.every(isValid) && wh !== '');
+}
+
+document.getElementById('webhook-url').addEventListener('input', updateSendBtn);
+
+function importCSV(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const lines = ev.target.result.split(/\r?\n/).filter(l => l.trim());
+    if (lines.length < 2) { toast('CSV vide ou invalide.', 'error'); return; }
+
+    const headers = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/[^a-z]/g,''));
+    const map = {};
+    const mappings = {
+      firstName: ['firstname','prenom','prénom','first','givenname'],
+      lastName: ['lastname','nom','last','surname','familyname'],
+      linkedinUrl: ['linkedinurl','linkedin','linkedinperson','personlinkedin','profileurl','liurl'],
+      company: ['company','entreprise','organization','org','companyname'],
+      companyLinkedinUrl: ['companylinkedinurl','companylinkedin','linkedincompany','companyurl','licompany']
+    };
+
+    FIELDS.forEach(f => {
+      const idx = headers.findIndex(h => mappings[f].includes(h));
+      if (idx !== -1) map[f] = idx;
+    });
+
+    const missing = FIELDS.filter(f => map[f] === undefined);
+    if (missing.length > 0) { toast(`Colonnes introuvables : ${missing.map(f => LABELS[f]).join(', ')}`, 'error'); return; }
+
+    let added = 0;
+    for (let i = 1; i < lines.length; i++) {
+      const cols = parseCSVLine(lines[i]);
+      const row = {};
+      FIELDS.forEach(f => { row[f] = (cols[map[f]] || '').trim(); });
+      const r = { id: ++idCounter, status:'idle', ...row };
+      leads.push(r);
+      added++;
+    }
+    renderTable();
+    toast(`${added} lead${added>1?'s':''} importé${added>1?'s':''}`, 'success');
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+}
+
+function parseCSVLine(line) {
+  const res = []; let cur = ''; let inQ = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (c === '"') { inQ = !inQ; }
+    else if (c === ',' && !inQ) { res.push(cur); cur = ''; }
+    else cur += c;
+  }
+  res.push(cur);
+  return res;
+}
+
+async function sendToClay() {
+  const webhookUrl = document.getElementById('webhook-url').value.trim();
+  if (!webhookUrl) { toast('Entrez l\'URL du webhook Clay.', 'error'); return; }
+
+  leads.forEach(l => l._touched = true);
+  const invalid = leads.filter(l => !isValid(l));
+  if (invalid.length > 0) { renderTable(); toast(`${invalid.length} ligne(s) incomplète(s).`, 'error'); return; }
+
+  const btn = document.getElementById('send-btn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Envoi en cours...';
+
+  const prog = document.getElementById('progress');
+  let sent = 0;
+
+  for (const lead of leads) {
+    lead.status = 'sending';
+    renderTable();
+
+    try {
+      const payload = {
+        firstName: lead.firstName,
+        lastName: lead.lastName,
+        linkedinUrl: lead.linkedinUrl,
+        company: lead.company,
+        companyLinkedinUrl: lead.companyLinkedinUrl
+      };
+
+      const res = await fetch(webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      lead.status = res.ok ? 'sent' : 'error';
+    } catch (err) {
+      lead.status = 'error';
+    }
+
+    sent++;
+    prog.style.width = `${(sent / leads.length) * 100}%`;
+    renderTable();
+    await new Promise(r => setTimeout(r, 150));
+  }
+
+  const ok = leads.filter(l => l.status === 'sent').length;
+  const err = leads.filter(l => l.status === 'error').length;
+
+  btn.textContent = '🚀 Envoyer vers Clay';
+  updateSendBtn();
+
+  if (err === 0) toast(`✅ ${ok} lead(s) envoyé(s) avec succès !`, 'success');
+  else toast(`${ok} envoyé(s), ${err} erreur(s). Vérifiez votre webhook.`, 'error');
+
+  setTimeout(() => { prog.style.width = '0%'; }, 1500);
+}
+
+function toast(msg, type = 'info') {
+  const wrap = document.getElementById('toast-wrap');
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.textContent = msg;
+  wrap.appendChild(el);
+  setTimeout(() => el.remove(), 4000);
+}
+
+renderTable();
+</script>
+</body>
+</html>
