@@ -713,7 +713,7 @@ const USERS=[
   {name:"Christophe HOAREAU",id:90604097},
 ];
 
-let leads=[],idc=0,importName='',importedBy='',hist=[];
+let leads=[],idc=0,importName='',importedBy='',importCode='',hist=[];
 let csvRawHeaders=[],csvRawRows=[],ownerPickVal='';
 let activeJobs=[];
 let cfg={personaMatch:true,enrichPhone:false,availableOnly:true};
@@ -783,6 +783,7 @@ function confirmNew(){
   if(!ok)return;
   closeNew();
   importName=n;importedBy=mSelVal;leads=[];idc=0;
+  importCode='IMP-'+Date.now().toString(36).toUpperCase()+'-'+Math.random().toString(36).slice(2,7).toUpperCase();
   resetCsvZone();
   document.getElementById('imp-title').textContent=n;
   document.getElementById('imp-by').textContent='By '+importedBy;
@@ -1001,7 +1002,7 @@ async function runSend(snapshot,name,by,c,jobId){
   for(const lead of snapshot){
     const owner=USERS.find(u=>u.name===lead.user);
     const payload={
-      importName:name,importedBy:by,
+      importName:name,importedBy:by,importCode:c.code,
       firstName:lead.firstName,lastName:lead.lastName,
       linkedinUrl:lead.linkedinUrl,companyLinkedinUrl:lead.companyUrl,
       jobTitle:lead.jobTitle||'',
