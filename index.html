@@ -1,341 +1,344 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Leads Manager → Clay</title>
+<title>Leads Manager → HubSpot</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f0f13; color: #e2e8f0; min-height: 100vh; }
-
-  header { background: #1a1a24; border-bottom: 1px solid #2d2d3d; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; }
-  header h1 { font-size: 18px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 10px; }
-  header h1 span { background: linear-gradient(135deg, #6366f1, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  .badge { background: #6366f1; color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 999px; font-weight: 600; -webkit-text-fill-color: #fff; }
-
-  .toolbar { display: flex; align-items: center; gap: 10px; padding: 14px 24px; background: #15151f; border-bottom: 1px solid #2d2d3d; flex-wrap: wrap; }
-  .webhook-section { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 260px; }
-  .webhook-section label { font-size: 12px; color: #94a3b8; white-space: nowrap; }
-  .webhook-input { flex: 1; background: #1e1e2e; border: 1px solid #3d3d5c; border-radius: 8px; padding: 7px 12px; color: #e2e8f0; font-size: 13px; outline: none; transition: border .2s; }
-  .webhook-input:focus { border-color: #6366f1; }
-  .webhook-input::placeholder { color: #4a4a6a; }
-
-  .btn { display: inline-flex; align-items: center; gap: 7px; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: all .2s; white-space: nowrap; }
-  .btn-ghost { background: #1e1e2e; color: #94a3b8; border: 1px solid #3d3d5c; }
-  .btn-ghost:hover { background: #2a2a3e; color: #e2e8f0; border-color: #6366f1; }
-  .btn-primary { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; }
-  .btn-primary:hover { opacity: .9; transform: translateY(-1px); box-shadow: 0 4px 15px rgba(99,102,241,.4); }
-  .btn-primary:disabled { opacity: .4; cursor: not-allowed; transform: none; box-shadow: none; }
-  .btn-danger { background: #1e1e2e; color: #f87171; border: 1px solid #3d3d5c; }
-  .btn-danger:hover { background: #2a1a1a; border-color: #f87171; }
-
-  .table-wrap { overflow-x: auto; padding: 0 24px 16px; margin-top: 16px; }
-  table { width: 100%; border-collapse: collapse; min-width: 600px; }
-  thead tr { background: #1a1a24; }
-  th { padding: 10px 12px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #64748b; border-bottom: 1px solid #2d2d3d; white-space: nowrap; }
-  th.required::after { content: ' *'; color: #f87171; }
-
-  tbody tr { border-bottom: 1px solid #1e1e2e; transition: background .15s; }
-  tbody tr:hover { background: #1a1a28; }
-  tbody tr.row-error { background: #1f1010; border-left: 3px solid #f87171; }
-  tbody tr.row-ok { background: #0d1f16; border-left: 3px solid #34d399; }
-
-  td { padding: 6px 8px; vertical-align: middle; }
-  td.num { color: #4a4a6a; font-size: 12px; text-align: center; width: 36px; }
-
-  .cell-input { width: 100%; background: transparent; border: 1px solid transparent; border-radius: 6px; padding: 6px 8px; color: #e2e8f0; font-size: 13px; outline: none; transition: all .15s; }
-  .cell-input:hover { border-color: #3d3d5c; background: #1e1e2e; }
-  .cell-input:focus { border-color: #6366f1; background: #1e1e2e; }
-  .cell-input.invalid { border-color: #f87171 !important; background: #1f1010 !important; }
-  .cell-input::placeholder { color: #3d3d5c; }
-
-  td.status-cell { width: 36px; text-align: center; font-size: 16px; }
-  td.action-cell { width: 40px; text-align: center; }
-  .del-btn { background: none; border: none; cursor: pointer; color: #4a4a6a; font-size: 16px; padding: 4px 8px; border-radius: 6px; transition: all .15s; line-height: 1; }
-  .del-btn:hover { color: #f87171; background: #2a1a1a; }
-
-  .footer-bar { display: flex; align-items: center; justify-content: space-between; padding: 12px 24px; background: #15151f; border-top: 1px solid #2d2d3d; font-size: 12px; color: #64748b; flex-wrap: wrap; gap: 8px; }
-
-  .toast-wrap { position: fixed; bottom: 24px; right: 24px; display: flex; flex-direction: column; gap: 8px; z-index: 999; }
-  .toast { padding: 12px 18px; border-radius: 10px; font-size: 13px; font-weight: 500; box-shadow: 0 4px 20px rgba(0,0,0,.5); animation: slideIn .3s ease; max-width: 320px; }
-  .toast.success { background: #064e3b; color: #34d399; border: 1px solid #065f46; }
-  .toast.error { background: #450a0a; color: #f87171; border: 1px solid #7f1d1d; }
-  .toast.info { background: #1e1e3e; color: #a5b4fc; border: 1px solid #3730a3; }
-  @keyframes slideIn { from { transform: translateX(40px); opacity:0; } to { transform: none; opacity:1; } }
-
-  .empty-state { text-align: center; padding: 48px 24px; color: #4a4a6a; }
-  .empty-state p { font-size: 14px; margin-top: 8px; }
-
-  #csv-input { display: none; }
-  .progress-bar { height: 3px; background: #1e1e2e; position: relative; overflow: hidden; }
-  .progress-fill { height: 100%; background: linear-gradient(90deg, #6366f1, #8b5cf6); width: 0%; transition: width .3s; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0f0f13;color:#e2e8f0;min-height:100vh;display:flex;flex-direction:column}
+  header{background:#1a1a24;border-bottom:1px solid #2d2d3d;padding:16px 24px;display:flex;align-items:center;justify-content:space-between}
+  header h1{font-size:18px;font-weight:700;color:#fff;display:flex;align-items:center;gap:10px}
+  header h1 span{background:linear-gradient(135deg,#ff7a59,#ff5c35);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .badge{background:#ff7a59;color:#fff;font-size:11px;padding:2px 8px;border-radius:999px;font-weight:600;-webkit-text-fill-color:#fff}
+  .tabs{display:flex;padding:0 24px;background:#15151f;border-bottom:1px solid #2d2d3d}
+  .tab{padding:12px 18px;font-size:13px;font-weight:600;cursor:pointer;color:#64748b;border-bottom:2px solid transparent;transition:all .2s}
+  .tab:hover{color:#e2e8f0}
+  .tab.active{color:#ffb59a;border-bottom-color:#ff7a59}
+  .view{display:none;flex:1;flex-direction:column}
+  .view.active{display:flex}
+  .toolbar{display:flex;align-items:center;gap:10px;padding:14px 24px;background:#15151f;border-bottom:1px solid #2d2d3d;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:7px;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .2s;white-space:nowrap}
+  .btn-ghost{background:#1e1e2e;color:#94a3b8;border:1px solid #3d3d5c}
+  .btn-ghost:hover{background:#2a2a3e;color:#e2e8f0;border-color:#ff7a59}
+  .btn-primary{background:linear-gradient(135deg,#ff7a59,#ff5c35);color:#fff}
+  .btn-primary:hover{opacity:.9;transform:translateY(-1px);box-shadow:0 4px 15px rgba(255,122,89,.4)}
+  .btn-primary:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+  .btn-danger{background:#1e1e2e;color:#f87171;border:1px solid #3d3d5c}
+  .btn-danger:hover{background:#2a1a1a;border-color:#f87171}
+  .table-wrap{overflow-x:auto;padding:0 24px 16px;margin-top:16px;flex:1}
+  table{width:100%;border-collapse:collapse;min-width:600px}
+  thead tr{background:#1a1a24}
+  th{padding:10px 12px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#64748b;border-bottom:1px solid #2d2d3d;white-space:nowrap}
+  th.req::after{content:' *';color:#f87171}
+  tbody tr{border-bottom:1px solid #1e1e2e;transition:background .15s}
+  tbody tr:hover{background:#1a1a28}
+  tbody tr.row-ok{background:#0d1f16;border-left:3px solid #34d399}
+  tbody tr.row-err{background:#1f1010;border-left:3px solid #f87171}
+  td{padding:6px 8px;vertical-align:middle}
+  td.num{color:#4a4a6a;font-size:12px;text-align:center;width:36px}
+  .ci{width:100%;background:transparent;border:1px solid transparent;border-radius:6px;padding:6px 8px;color:#e2e8f0;font-size:13px;outline:none;transition:all .15s}
+  .ci:hover{border-color:#3d3d5c;background:#1e1e2e}
+  .ci:focus{border-color:#ff7a59;background:#1e1e2e}
+  .ci.inv{border-color:#f87171!important;background:#1f1010!important}
+  .ci::placeholder{color:#3d3d5c}
+  .cs{width:100%;background:#1e1e2e;border:1px solid transparent;border-radius:6px;padding:6px 8px;color:#e2e8f0;font-size:13px;outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;padding-right:28px}
+  .cs:hover{border-color:#3d3d5c}
+  .cs:focus{border-color:#ff7a59}
+  .cs.inv{border-color:#f87171!important}
+  .cs option{background:#1e1e2e;color:#e2e8f0}
+  td.sc{width:36px;text-align:center;font-size:16px}
+  td.ac{width:40px;text-align:center}
+  .db{background:none;border:none;cursor:pointer;color:#4a4a6a;font-size:16px;padding:4px 8px;border-radius:6px;transition:all .15s;line-height:1}
+  .db:hover{color:#f87171;background:#2a1a1a}
+  .footer-bar{display:flex;align-items:center;justify-content:space-between;padding:12px 24px;background:#15151f;border-top:1px solid #2d2d3d;font-size:12px;color:#64748b;flex-wrap:wrap;gap:8px}
+  .pb{height:3px;background:#1e1e2e}
+  .pf{height:100%;background:linear-gradient(90deg,#ff7a59,#ff5c35);width:0%;transition:width .3s}
+  .empty{text-align:center;padding:48px 24px;color:#4a4a6a}
+  .empty p{font-size:14px;margin-top:8px}
+  #csv-input{display:none}
+  .hw{padding:24px;flex:1;overflow-y:auto}
+  .hh{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+  .hh h2{font-size:15px;font-weight:700}
+  .he{text-align:center;padding:48px 24px;color:#4a4a6a}
+  .he p{font-size:14px;margin-top:8px}
+  .batch{background:#1a1a24;border:1px solid #2d2d3d;border-radius:12px;margin-bottom:12px;overflow:hidden}
+  .bh{display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;transition:background .15s}
+  .bh:hover{background:#1e1e2e}
+  .bd-date{font-size:12px;color:#64748b;margin-top:2px}
+  .bt{font-size:13px;font-weight:600;flex:1}
+  .bs{display:flex;gap:8px}
+  .sp{font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px}
+  .sp-ok{background:#064e3b;color:#34d399}
+  .sp-err{background:#450a0a;color:#f87171}
+  .sp-tot{background:#1e1e3e;color:#a5b4fc}
+  .bc{color:#4a4a6a;font-size:12px;transition:transform .2s}
+  .batch.open .bc{transform:rotate(90deg)}
+  .bb{display:none;border-top:1px solid #2d2d3d}
+  .batch.open .bb{display:block}
+  .bt2{width:100%;border-collapse:collapse;font-size:12px}
+  .bt2 th{padding:8px 14px;text-align:left;color:#64748b;font-weight:600;text-transform:uppercase;font-size:10px;letter-spacing:.05em;border-bottom:1px solid #2d2d3d}
+  .bt2 td{padding:8px 14px;border-bottom:1px solid #1e1e2e;color:#94a3b8}
+  .bt2 tr:last-child td{border-bottom:none}
+  .s-ok{color:#34d399!important}
+  .s-err{color:#f87171!important}
+  .tw{position:fixed;bottom:24px;right:24px;display:flex;flex-direction:column;gap:8px;z-index:999}
+  .toast{padding:12px 18px;border-radius:10px;font-size:13px;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,.5);animation:si .3s ease;max-width:320px}
+  .toast.success{background:#064e3b;color:#34d399;border:1px solid #065f46}
+  .toast.error{background:#450a0a;color:#f87171;border:1px solid #7f1d1d}
+  .toast.info{background:#1e1e3e;color:#a5b4fc;border:1px solid #3730a3}
+  @keyframes si{from{transform:translateX(40px);opacity:0}to{transform:none;opacity:1}}
 </style>
 </head>
 <body>
 
 <header>
-  <h1>🗂 Leads Manager <span>→ Clay</span></h1>
+  <h1>🗂 Leads Manager <span>→ HubSpot</span></h1>
   <span class="badge" id="count-badge">0 leads</span>
 </header>
 
-<div class="toolbar">
-  <div class="webhook-section">
-    <label>Webhook Clay :</label>
-    <input class="webhook-input" id="webhook-url" type="url"
-      value="https://api.clay.com/v3/sources/webhook/pull-in-data-from-a-webhook-be430a93-c9a6-4222-832b-fff68466e1ee"
-    />
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('leads')">📋 Leads</div>
+  <div class="tab" onclick="switchTab('history')" id="htab">🕓 History</div>
+</div>
+
+<div class="view active" id="view-leads">
+  <div class="toolbar">
+    <button class="btn btn-ghost" onclick="addRow()">＋ Add row</button>
+    <button class="btn btn-ghost" onclick="document.getElementById('csv-input').click()">📂 Import CSV</button>
+    <input type="file" id="csv-input" accept=".csv" onchange="importCSV(event)">
+    <button class="btn btn-danger" onclick="clearAll()">🗑 Clear all</button>
+    <button class="btn btn-primary" id="send-btn" onclick="sendToHubspot()" disabled>🚀 Send to HubSpot</button>
   </div>
-  <button class="btn btn-ghost" onclick="addRow()">＋ Ajouter une ligne</button>
-  <button class="btn btn-ghost" onclick="document.getElementById('csv-input').click()">📂 Importer CSV</button>
-  <input type="file" id="csv-input" accept=".csv" onchange="importCSV(event)">
-  <button class="btn btn-danger" onclick="clearAll()">🗑 Tout effacer</button>
-  <button class="btn btn-primary" id="send-btn" onclick="sendToClay()" disabled>🚀 Envoyer vers Clay</button>
-</div>
-<div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
-
-<div class="table-wrap">
-  <table id="leads-table">
-    <thead>
-      <tr>
-        <th style="width:36px">#</th>
-        <th class="required">Prénom</th>
-        <th class="required">Nom</th>
-        <th class="required">LinkedIn URL (Personne)</th>
-        <th class="required">Entreprise</th>
-        <th class="required">LinkedIn URL (Entreprise)</th>
-        <th style="width:36px"></th>
-        <th style="width:40px"></th>
-      </tr>
-    </thead>
-    <tbody id="leads-body"></tbody>
-  </table>
-  <div class="empty-state" id="empty-state">
-    <div style="font-size:40px">📋</div>
-    <p>Aucun lead. Ajoutez une ligne ou importez un CSV.</p>
+  <div class="pb"><div class="pf" id="progress"></div></div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:36px">#</th>
+          <th class="req">LinkedIn Profile URL</th>
+          <th class="req">LinkedIn Company URL</th>
+          <th class="req">Assignee</th>
+          <th style="width:36px"></th>
+          <th style="width:40px"></th>
+        </tr>
+      </thead>
+      <tbody id="leads-body"></tbody>
+    </table>
+    <div class="empty" id="empty-state">
+      <div style="font-size:40px">📋</div>
+      <p>No leads yet. Add a row or import a CSV file.</p>
+    </div>
+  </div>
+  <div class="footer-bar">
+    <span id="footer-info">0 leads · 0 valid · 0 incomplete</span>
+    <span>Required: LinkedIn Profile URL, LinkedIn Company URL, Assignee</span>
   </div>
 </div>
 
-<div class="footer-bar">
-  <span id="footer-info">0 lead · 0 valide · 0 incomplet</span>
-  <span>Champs requis : Prénom, Nom, LinkedIn URL, Entreprise, LinkedIn Company URL</span>
+<div class="view" id="view-history">
+  <div class="hw">
+    <div class="hh">
+      <h2>Send History</h2>
+      <button class="btn btn-danger" onclick="clearHistory()">🗑 Clear history</button>
+    </div>
+    <div id="history-list"></div>
+    <div class="he" id="history-empty">
+      <div style="font-size:40px">🕓</div>
+      <p>No sends yet.</p>
+    </div>
+  </div>
 </div>
 
-<div class="toast-wrap" id="toast-wrap"></div>
+<div class="tw" id="toast-wrap"></div>
 
 <script>
-let leads = [];
-let idCounter = 0;
+const WEBHOOK = 'https://api.clay.com/v3/sources/webhook/pull-in-data-from-a-webhook-be430a93-c9a6-4222-832b-fff68466e1ee';
+const USERS = ["Gwenn JAMBOU","Nolwenn André","Victoria Hanne","Maxence Jaubert","Jacopo Carretta","Aurélie Pureur","Noémie de Montmarin","Fanny Maynadie","Valentin Burr","Team IT","Sara Poretta","Marie Tiberghien","Imane Omri","Pauline NUGUES","Emeline Wulstecke","Justine Gager","Eléonore Guillemot","Kevin Rignault","Colm O'Brien","Clara Facchetti","Becca Guinchard","Duncan Perret","Laura POUDEVIGNE","Chakir SMIRES","Sofia Taleb Benjelloun","Dylan Pujol","Sacha Ghanem","Capucine LEVY","Mélina LE MIGNON","Emmanuelle Sillé","François Lehec","Karla Rousselet","Clément ATTOU","Evana Le Puil","Maxime BOUCHER","Lolita Soligny","Max HANCE","Julien Hirtzig","Camille Brun","Vianney Mathorel","Marie Tavenier","Florian Donet","David BERNARD","Mélanie Chauvin","Margot Pourailly","Emeric Kubiak","Aurore Lefebvre","Paul Stout","Noémie GRILLOT","Charly Arnaud","Jeanne DARBIN","Wendy BECHET","Lauren Tait","Alessandro De Valerio","Luciano Cipolla","Alexandre Collignon","FANNY POURCINE","Simon Baron","Christopher ROUSSEL","Charlie VEREAU","Tales MARRA","Marine Degruson","Elodie PINHEIRA","Julie BABEAU","ROMAIN TIRUEL","Aisha Roukhamieh-Mckinna","Svetlana Pashina","Laura Weerawardana","Christophe HOAREAU","Yohan LE CLECH","Mathieu Parisot","Arthur BEQUIN","Valentin Beaudon","Jules Jatteau","Siril Maurice","Antoine GOEHRS","Rebecca COTTIGNIES","Arthur DAVIES","Quentin CERVELLE","Emmanuelle Cortes","JB Comte"];
 
-const FIELDS = ['firstName','lastName','linkedinUrl','company','companyLinkedinUrl'];
-const LABELS = { firstName:'Prénom', lastName:'Nom', linkedinUrl:'LinkedIn URL (Personne)', company:'Entreprise', companyLinkedinUrl:'LinkedIn Company URL' };
-const PLACEHOLDERS = { firstName:'Jean', lastName:'Dupont', linkedinUrl:'https://linkedin.com/in/...', company:'Acme Corp', companyLinkedinUrl:'https://linkedin.com/company/...' };
+let leads=[], idc=0, hist=[];
+try{hist=JSON.parse(localStorage.getItem('hs_hist')||'[]');}catch{}
 
-function addRow(data = {}) {
-  const row = { id: ++idCounter, firstName:'', lastName:'', linkedinUrl:'', company:'', companyLinkedinUrl:'', status:'idle', ...data };
-  leads.push(row);
-  renderTable();
+function switchTab(t){
+  document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',(i===0&&t==='leads')||(i===1&&t==='history')));
+  document.getElementById('view-leads').classList.toggle('active',t==='leads');
+  document.getElementById('view-history').classList.toggle('active',t==='history');
+  if(t==='history') renderHistory();
 }
 
-function removeRow(id) {
-  leads = leads.filter(l => l.id !== id);
-  renderTable();
+function addRow(d={}){
+  leads.push({id:++idc,linkedinUrl:'',companyUrl:'',user:'',status:'idle',...d});
+  render();
 }
 
-function clearAll() {
-  if (leads.length === 0) return;
-  if (!confirm('Effacer tous les leads ?')) return;
-  leads = [];
-  renderTable();
+function removeRow(id){leads=leads.filter(l=>l.id!==id);render();}
+
+function clearAll(){
+  if(!leads.length||!confirm('Clear all leads?'))return;
+  leads=[];render();
 }
 
-function updateLive(id, field, el) {
-  const lead = leads.find(l => l.id === id);
-  if (!lead) return;
-  lead[field] = el.value;
-  if (lead._touched) el.classList.toggle('invalid', el.value.trim() === '');
-  updateFooter(); updateSendBtn(); updateBadge();
+function isValid(l){return l.linkedinUrl.trim()&&l.companyUrl.trim()&&l.user.trim();}
+function esc(s){return(s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
+
+function onInput(id,f,el){
+  const l=leads.find(l=>l.id===id);if(!l)return;
+  l[f]=el.value;
+  if(l._t)el.classList.toggle('inv',!el.value.trim());
+  updateFooter();updateBtn();updateBadge();
 }
 
-function touchField(id, field, el) {
-  const lead = leads.find(l => l.id === id);
-  if (!lead) return;
-  lead._touched = true;
-  lead[field] = el.value.trim();
-  el.value = lead[field];
-  el.classList.toggle('invalid', lead[field] === '');
-  updateFooter(); updateSendBtn();
+function onBlur(id,f,el){
+  const l=leads.find(l=>l.id===id);if(!l)return;
+  l._t=true;l[f]=el.value.trim();el.value=l[f];
+  el.classList.toggle('inv',!l[f]);
+  updateFooter();updateBtn();
 }
 
-function isValid(lead) { return FIELDS.every(f => lead[f] && lead[f].trim() !== ''); }
+function onSelect(id,el){
+  const l=leads.find(l=>l.id===id);if(!l)return;
+  l._t=true;l.user=el.value;
+  el.classList.toggle('inv',!el.value);
+  updateFooter();updateBtn();updateBadge();
+}
 
-function esc(s) { return (s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
-
-function renderTable() {
-  const body = document.getElementById('leads-body');
-  const empty = document.getElementById('empty-state');
-  empty.style.display = leads.length === 0 ? 'block' : 'none';
-
-  body.innerHTML = leads.map((lead, i) => {
-    const valid = isValid(lead);
-    const rowClass = lead.status === 'sent' ? 'row-ok' : lead.status === 'error' ? 'row-error' : '';
-    const statusIcon = lead.status === 'sent' ? '✅' : lead.status === 'error' ? '❌' : lead.status === 'sending' ? '⏳' : (valid ? '🟢' : '⚪');
-
-    return `<tr class="${rowClass}" id="row-${lead.id}">
+function render(){
+  const body=document.getElementById('leads-body');
+  document.getElementById('empty-state').style.display=leads.length?'none':'block';
+  body.innerHTML=leads.map((l,i)=>{
+    const rc=l.status==='sent'?'row-ok':l.status==='error'?'row-err':'';
+    const ic=l.status==='sent'?'✅':l.status==='error'?'❌':l.status==='sending'?'⏳':isValid(l)?'🟢':'⚪';
+    return `<tr class="${rc}">
       <td class="num">${i+1}</td>
-      ${FIELDS.map(f => {
-        const inv = lead._touched && lead[f] === '' ? 'invalid' : '';
-        return `<td><input class="cell-input ${inv}" value="${esc(lead[f])}" placeholder="${PLACEHOLDERS[f]}"
-          oninput="updateLive(${lead.id},'${f}',this)"
-          onblur="touchField(${lead.id},'${f}',this)"
-        /></td>`;
-      }).join('')}
-      <td class="status-cell">${statusIcon}</td>
-      <td class="action-cell"><button class="del-btn" onclick="removeRow(${lead.id})" title="Supprimer">✕</button></td>
+      <td><input class="ci${l._t&&!l.linkedinUrl?' inv':''}" value="${esc(l.linkedinUrl)}" placeholder="https://linkedin.com/in/..."
+        oninput="onInput(${l.id},'linkedinUrl',this)" onblur="onBlur(${l.id},'linkedinUrl',this)"/></td>
+      <td><input class="ci${l._t&&!l.companyUrl?' inv':''}" value="${esc(l.companyUrl)}" placeholder="https://linkedin.com/company/..."
+        oninput="onInput(${l.id},'companyUrl',this)" onblur="onBlur(${l.id},'companyUrl',this)"/></td>
+      <td><select class="cs${l._t&&!l.user?' inv':''}" onchange="onSelect(${l.id},this)">
+        <option value="">-- Select assignee --</option>
+        ${USERS.map(u=>`<option value="${esc(u)}"${l.user===u?' selected':''}>${esc(u)}</option>`).join('')}
+      </select></td>
+      <td class="sc">${ic}</td>
+      <td class="ac"><button class="db" onclick="removeRow(${l.id})">✕</button></td>
     </tr>`;
   }).join('');
-
-  updateFooter(); updateSendBtn(); updateBadge();
+  updateFooter();updateBtn();updateBadge();
 }
 
-function updateFooter() {
-  const valid = leads.filter(isValid).length;
-  const invalid = leads.length - valid;
-  document.getElementById('footer-info').textContent = `${leads.length} lead${leads.length>1?'s':''} · ${valid} valide${valid>1?'s':''} · ${invalid} incomplet${invalid>1?'s':''}`;
+function updateFooter(){
+  const v=leads.filter(isValid).length;
+  document.getElementById('footer-info').textContent=`${leads.length} lead${leads.length!==1?'s':''} · ${v} valid · ${leads.length-v} incomplete`;
 }
+function updateBadge(){document.getElementById('count-badge').textContent=`${leads.length} lead${leads.length!==1?'s':''}`;}
+function updateBtn(){document.getElementById('send-btn').disabled=!(leads.length&&leads.every(isValid));}
 
-function updateBadge() {
-  document.getElementById('count-badge').textContent = `${leads.length} lead${leads.length>1?'s':''}`;
-}
-
-function updateSendBtn() {
-  const btn = document.getElementById('send-btn');
-  const wh = document.getElementById('webhook-url').value.trim();
-  btn.disabled = !(leads.length > 0 && leads.every(isValid) && wh !== '');
-}
-
-document.getElementById('webhook-url').addEventListener('input', updateSendBtn);
-
-function importCSV(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => {
-    const lines = ev.target.result.split(/\r?\n/).filter(l => l.trim());
-    if (lines.length < 2) { toast('CSV vide ou invalide.', 'error'); return; }
-
-    const headers = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/[^a-z]/g,''));
-    const map = {};
-    const mappings = {
-      firstName: ['firstname','prenom','prénom','first','givenname'],
-      lastName: ['lastname','nom','last','surname','familyname'],
-      linkedinUrl: ['linkedinurl','linkedin','linkedinperson','personlinkedin','profileurl','liurl'],
-      company: ['company','entreprise','organization','org','companyname'],
-      companyLinkedinUrl: ['companylinkedinurl','companylinkedin','linkedincompany','companyurl','licompany']
-    };
-
-    FIELDS.forEach(f => {
-      const idx = headers.findIndex(h => mappings[f].includes(h));
-      if (idx !== -1) map[f] = idx;
-    });
-
-    const missing = FIELDS.filter(f => map[f] === undefined);
-    if (missing.length > 0) { toast(`Colonnes introuvables : ${missing.map(f => LABELS[f]).join(', ')}`, 'error'); return; }
-
-    let added = 0;
-    for (let i = 1; i < lines.length; i++) {
-      const cols = parseCSVLine(lines[i]);
-      const row = {};
-      FIELDS.forEach(f => { row[f] = (cols[map[f]] || '').trim(); });
-      const r = { id: ++idCounter, status:'idle', ...row };
-      leads.push(r);
+function importCSV(e){
+  const file=e.target.files[0];if(!file)return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    const lines=ev.target.result.split(/\r?\n/).filter(l=>l.trim());
+    if(lines.length<2){toast('Empty or invalid CSV.','error');return;}
+    const headers=lines[0].split(',').map(h=>h.trim().toLowerCase().replace(/[^a-z]/g,''));
+    const map={};
+    const m={linkedinUrl:['linkedinurl','linkedin','profileurl','liurl'],companyUrl:['companylinkedinurl','companylinkedin','companyurl','linkedincompany'],user:['user','assignee','owner','utilisateur']};
+    Object.keys(m).forEach(f=>{const i=headers.findIndex(h=>m[f].includes(h));if(i!==-1)map[f]=i;});
+    const missing=Object.keys(m).filter(f=>map[f]===undefined);
+    if(missing.length){toast(`Columns not found: ${missing.join(', ')}`,'error');return;}
+    let added=0;
+    for(let i=1;i<lines.length;i++){
+      const cols=parseCSV(lines[i]);
+      leads.push({id:++idc,status:'idle',linkedinUrl:(cols[map.linkedinUrl]||'').trim(),companyUrl:(cols[map.companyUrl]||'').trim(),user:(cols[map.user]||'').trim()});
       added++;
     }
-    renderTable();
-    toast(`${added} lead${added>1?'s':''} importé${added>1?'s':''}`, 'success');
+    render();toast(`${added} lead${added!==1?'s':''} imported`,'success');
   };
-  reader.readAsText(file);
-  e.target.value = '';
+  r.readAsText(file);e.target.value='';
 }
 
-function parseCSVLine(line) {
-  const res = []; let cur = ''; let inQ = false;
-  for (let i = 0; i < line.length; i++) {
-    const c = line[i];
-    if (c === '"') { inQ = !inQ; }
-    else if (c === ',' && !inQ) { res.push(cur); cur = ''; }
-    else cur += c;
+function parseCSV(line){
+  const res=[];let cur='';let q=false;
+  for(const c of line){if(c==='"'){q=!q;}else if(c===','&&!q){res.push(cur);cur='';}else cur+=c;}
+  res.push(cur);return res;
+}
+
+async function sendToHubspot(){
+  leads.forEach(l=>l._t=true);
+  if(leads.some(l=>!isValid(l))){render();toast('Some rows are incomplete.','error');return;}
+  const btn=document.getElementById('send-btn');
+  btn.disabled=true;btn.textContent='⏳ Sending...';
+  const prog=document.getElementById('progress');
+  const results=[];let sent=0;
+  for(const lead of leads){
+    lead.status='sending';render();
+    const payload={linkedinUrl:lead.linkedinUrl,companyLinkedinUrl:lead.companyUrl,user:lead.user};
+    try{
+      const res=await fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+      lead.status=res.ok?'sent':'error';
+    }catch{lead.status='error';}
+    results.push({...payload,status:lead.status});
+    sent++;prog.style.width=`${(sent/leads.length)*100}%`;
+    render();await new Promise(r=>setTimeout(r,150));
   }
-  res.push(cur);
-  return res;
+  const ok=results.filter(r=>r.status==='sent').length;
+  const err=results.filter(r=>r.status==='error').length;
+  hist.unshift({id:Date.now(),date:new Date().toLocaleString('en-GB'),total:results.length,ok,err,leads:results});
+  try{localStorage.setItem('hs_hist',JSON.stringify(hist));}catch{}
+  updateHistoryBadge();
+  btn.textContent='🚀 Send to HubSpot';updateBtn();
+  toast(err===0?`✅ ${ok} lead${ok!==1?'s':''} sent successfully!`:`${ok} sent, ${err} error${err!==1?'s':''}.`,err===0?'success':'error');
+  setTimeout(()=>{prog.style.width='0%';},1500);
 }
 
-async function sendToClay() {
-  const webhookUrl = document.getElementById('webhook-url').value.trim();
-  if (!webhookUrl) { toast('Entrez l\'URL du webhook Clay.', 'error'); return; }
-
-  leads.forEach(l => l._touched = true);
-  const invalid = leads.filter(l => !isValid(l));
-  if (invalid.length > 0) { renderTable(); toast(`${invalid.length} ligne(s) incomplète(s).`, 'error'); return; }
-
-  const btn = document.getElementById('send-btn');
-  btn.disabled = true;
-  btn.textContent = '⏳ Envoi en cours...';
-
-  const prog = document.getElementById('progress');
-  let sent = 0;
-
-  for (const lead of leads) {
-    lead.status = 'sending';
-    renderTable();
-
-    try {
-      const payload = {
-        firstName: lead.firstName,
-        lastName: lead.lastName,
-        linkedinUrl: lead.linkedinUrl,
-        company: lead.company,
-        companyLinkedinUrl: lead.companyLinkedinUrl
-      };
-
-      const res = await fetch(webhookUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-
-      lead.status = res.ok ? 'sent' : 'error';
-    } catch (err) {
-      lead.status = 'error';
-    }
-
-    sent++;
-    prog.style.width = `${(sent / leads.length) * 100}%`;
-    renderTable();
-    await new Promise(r => setTimeout(r, 150));
-  }
-
-  const ok = leads.filter(l => l.status === 'sent').length;
-  const err = leads.filter(l => l.status === 'error').length;
-
-  btn.textContent = '🚀 Envoyer vers Clay';
-  updateSendBtn();
-
-  if (err === 0) toast(`✅ ${ok} lead(s) envoyé(s) avec succès !`, 'success');
-  else toast(`${ok} envoyé(s), ${err} erreur(s). Vérifiez votre webhook.`, 'error');
-
-  setTimeout(() => { prog.style.width = '0%'; }, 1500);
+function renderHistory(){
+  const list=document.getElementById('history-list');
+  document.getElementById('history-empty').style.display=hist.length?'none':'block';
+  list.innerHTML=hist.map(b=>`
+    <div class="batch" id="b${b.id}">
+      <div class="bh" onclick="toggleBatch(${b.id})">
+        <div style="flex:1">
+          <div class="bt">Send · ${b.total} lead${b.total!==1?'s':''}</div>
+          <div class="bd-date">${b.date}</div>
+        </div>
+        <div class="bs">
+          <span class="sp sp-tot">${b.total} total</span>
+          ${b.ok?`<span class="sp sp-ok">✅ ${b.ok} ok</span>`:''}
+          ${b.err?`<span class="sp sp-err">❌ ${b.err} error${b.err!==1?'s':''}</span>`:''}
+        </div>
+        <span class="bc">▶</span>
+      </div>
+      <div class="bb">
+        <table class="bt2">
+          <thead><tr><th>LinkedIn Profile</th><th>Company LinkedIn</th><th>Assignee</th><th>Status</th></tr></thead>
+          <tbody>${b.leads.map(l=>`<tr>
+            <td>${esc(l.linkedinUrl)}</td>
+            <td>${esc(l.companyLinkedinUrl)}</td>
+            <td>${esc(l.user)}</td>
+            <td class="${l.status==='sent'?'s-ok':'s-err'}">${l.status==='sent'?'✅ Sent':'❌ Error'}</td>
+          </tr>`).join('')}</tbody>
+        </table>
+      </div>
+    </div>`).join('');
 }
 
-function toast(msg, type = 'info') {
-  const wrap = document.getElementById('toast-wrap');
-  const el = document.createElement('div');
-  el.className = `toast ${type}`;
-  el.textContent = msg;
-  wrap.appendChild(el);
-  setTimeout(() => el.remove(), 4000);
+function toggleBatch(id){document.getElementById(`b${id}`).classList.toggle('open');}
+
+function clearHistory(){
+  if(!hist.length||!confirm('Clear all history?'))return;
+  hist=[];try{localStorage.setItem('hs_hist','[]');}catch{}
+  renderHistory();updateHistoryBadge();
 }
 
-renderTable();
+function updateHistoryBadge(){
+  document.getElementById('htab').textContent=hist.length?`🕓 History (${hist.length})`:'🕓 History';
+}
+
+function toast(msg,type='info'){
+  const w=document.getElementById('toast-wrap');
+  const el=document.createElement('div');el.className=`toast ${type}`;el.textContent=msg;
+  w.appendChild(el);setTimeout(()=>el.remove(),4000);
+}
+
+render();updateHistoryBadge();
 </script>
 </body>
 </html>
