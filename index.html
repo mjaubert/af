@@ -7,7 +7,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#08080e;--surface:#0f0f1a;--s2:#14141f;--s3:#1a1a2e;
+  --bg:#08080e;--s2:#14141f;
   --b:rgba(255,255,255,.07);--b2:rgba(255,255,255,.12);
   --t:#f1f5f9;--t2:#94a3b8;--t3:#4a5568;
   --a:#ff7a59;--a2:#ff5c35;--a3:#f59e0b;
@@ -63,7 +63,19 @@ header{padding:16px 32px;display:flex;align-items:center;justify-content:space-b
 .sec-title{font-size:13px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:10px;color:var(--t2);text-transform:uppercase;letter-spacing:.06em}
 .sec-badge{background:rgba(255,122,89,.15);color:var(--a);font-size:11px;padding:2px 9px;border-radius:999px;font-weight:700}
 
-/* HISTORY — scrollable container */
+/* IN-PROGRESS BANNER */
+.inprogress-banner{display:none;background:linear-gradient(135deg,rgba(99,102,241,.12),rgba(139,92,246,.08));border:1px solid rgba(99,102,241,.25);border-radius:var(--rl);padding:20px 24px;margin-bottom:24px;animation:fadeIn .4s ease}
+.inprogress-banner.show{display:flex;align-items:flex-start;gap:16px}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+.inprogress-spinner{width:36px;height:36px;border-radius:10px;border:2px solid rgba(99,102,241,.3);border-top-color:#818cf8;animation:spin 1s linear infinite;flex-shrink:0;margin-top:2px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.inprogress-body{flex:1}
+.inprogress-label{display:inline-flex;align-items:center;gap:6px;background:rgba(99,102,241,.18);border:1px solid rgba(99,102,241,.3);border-radius:999px;padding:3px 10px;font-size:11px;font-weight:700;color:#a5b4fc;margin-bottom:8px}
+.inprogress-title{font-size:15px;font-weight:700;color:var(--t);margin-bottom:4px}
+.inprogress-sub{font-size:13px;color:var(--t3);line-height:1.6}
+.inprogress-sub strong{color:var(--t2)}
+
+/* HISTORY */
 .hist-scroll{max-height:480px;overflow-y:auto;padding-right:4px}
 .hist-scroll::-webkit-scrollbar{width:4px}
 .hist-scroll::-webkit-scrollbar-track{background:transparent}
@@ -83,7 +95,7 @@ header{padding:16px 32px;display:flex;align-items:center;justify-content:space-b
 .bcard-name{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .bcard-sub{font-size:12px;color:var(--t3);margin-top:3px}
 .bcard-sub strong{color:var(--t2);font-weight:600}
-.bcard-pills{display:flex;gap:6px;flex-shrink:0}
+.bcard-pills{display:flex;gap:6px;flex-shrink:0;align-items:center}
 .pill{font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px}
 .pill-t{background:rgba(99,102,241,.14);color:#a5b4fc}
 .pill-ok{background:rgba(16,185,129,.12);color:#34d399}
@@ -118,7 +130,7 @@ header{padding:16px 32px;display:flex;align-items:center;justify-content:space-b
 .modal-actions{display:flex;gap:10px;margin-top:8px}
 .modal-actions .btn{flex:1;padding:12px}
 
-/* CUSTOM SELECT (modal "Created by") */
+/* CUSTOM SELECT — Created by */
 .sel-wrap{position:relative}
 .sel-trigger{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:var(--r);padding:13px 16px;color:var(--t);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;transition:all .18s;user-select:none}
 .sel-trigger:hover{border-color:rgba(255,255,255,.16);background:rgba(255,255,255,.07)}
@@ -128,7 +140,7 @@ header{padding:16px 32px;display:flex;align-items:center;justify-content:space-b
 .sel-ph{color:var(--t3)}
 .sel-arrow{color:var(--t3);font-size:11px;transition:transform .2s;flex-shrink:0}
 .sel-trigger.open .sel-arrow{transform:rotate(180deg)}
-.sel-dd{position:absolute;top:calc(100% + 6px);left:0;right:0;background:#13131f;border:1px solid rgba(255,255,255,.1);border-radius:var(--r);box-shadow:0 16px 48px rgba(0,0,0,.6);z-index:300;overflow:hidden;animation:ddIn .18s}
+.sel-dd{position:absolute;top:calc(100%+6px);left:0;right:0;background:#13131f;border:1px solid rgba(255,255,255,.1);border-radius:var(--r);box-shadow:0 16px 48px rgba(0,0,0,.6);z-index:300;overflow:hidden;animation:ddIn .18s}
 @keyframes ddIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
 .sel-search{padding:10px 12px;border-bottom:1px solid var(--b)}
 .sel-search input{width:100%;background:rgba(255,255,255,.06);border:1px solid var(--b2);border-radius:8px;padding:8px 12px;color:var(--t);font-size:13px;outline:none;font-family:inherit}
@@ -166,9 +178,6 @@ header{padding:16px 32px;display:flex;align-items:center;justify-content:space-b
 .csv-drop.has-file .csv-drop-inner{background:rgba(255,122,89,.1);border-color:rgba(255,122,89,.35);color:var(--a)}
 .csv-fname{max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
-.completed-banner{display:none;align-items:center;gap:12px;padding:12px 32px;background:rgba(16,185,129,.08);border-bottom:1px solid rgba(16,185,129,.18)}
-.completed-banner.show{display:flex}
-.completed-banner span{font-size:13px;color:#34d399;font-weight:600}
 .pb{height:2px;background:rgba(255,255,255,.05)}
 .pf{height:100%;background:linear-gradient(90deg,var(--a),var(--a3));width:0%;transition:width .3s}
 
@@ -222,8 +231,6 @@ td.ac{width:38px;text-align:center}
 
 /* ═══ CSV MAPPING MODAL ═══ */
 .map-modal{max-width:560px}
-
-/* mapping rows — CSV col LEFT → HubSpot field RIGHT */
 .map-grid{display:flex;flex-direction:column;gap:8px;margin-bottom:8px}
 .map-row{display:grid;grid-template-columns:1fr 32px 1fr;align-items:center;gap:10px}
 .map-csv-sel{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:9px;padding:10px 14px;color:var(--t);font-size:13px;outline:none;font-family:inherit;cursor:pointer;width:100%;transition:all .15s;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px}
@@ -231,32 +238,28 @@ td.ac{width:38px;text-align:center}
 .map-csv-sel:focus{border-color:var(--a);box-shadow:0 0 0 3px rgba(255,122,89,.12)}
 .map-csv-sel.auto{border-color:rgba(16,185,129,.35);background-color:rgba(16,185,129,.06)}
 .map-csv-sel option{background:#13131f}
-.map-arrow{text-align:center;color:var(--t3);font-size:16px;letter-spacing:-2px}
+.map-arrow{text-align:center;color:var(--t3);font-size:16px}
 .map-target{background:rgba(255,122,89,.07);border:1px solid rgba(255,122,89,.18);border-radius:9px;padding:10px 14px;font-size:13px;font-weight:600;color:var(--a);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .map-target .star{color:var(--err);margin-left:3px;font-size:11px}
-
 .map-divider{height:1px;background:rgba(255,255,255,.06);margin:20px 0}
 
-/* ── OWNER PICKER — premium block ── */
-.owner-block{background:linear-gradient(135deg,rgba(99,102,241,.08) 0%,rgba(139,92,246,.06) 100%);border:1px solid rgba(99,102,241,.22);border-radius:var(--rl);padding:20px 22px}
+/* OWNER PICKER */
+.owner-block{background:linear-gradient(135deg,rgba(99,102,241,.08),rgba(139,92,246,.06));border:1px solid rgba(99,102,241,.22);border-radius:var(--rl);padding:20px 22px}
 .owner-block-header{display:flex;align-items:center;gap:10px;margin-bottom:16px}
 .owner-block-icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,rgba(99,102,241,.3),rgba(139,92,246,.2));border:1px solid rgba(99,102,241,.3);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
 .owner-block-title{font-size:14px;font-weight:700;color:#c4b5fd}
 .owner-block-sub{font-size:12px;color:rgba(196,181,253,.55);margin-top:2px}
-
-/* owner picker trigger */
+.owner-pick-wrap{position:relative}
 .owner-pick-trigger{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(99,102,241,.25);border-radius:var(--r);padding:13px 16px;color:var(--t);font-size:14px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:all .18s;user-select:none}
 .owner-pick-trigger:hover{border-color:rgba(99,102,241,.45);background:rgba(99,102,241,.08)}
 .owner-pick-trigger.open{border-color:#818cf8;background:rgba(99,102,241,.1);box-shadow:0 0 0 3px rgba(99,102,241,.15)}
-.owner-pick-trigger.has-val{border-color:rgba(99,102,241,.4)}
-.owner-avatar{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--a),var(--a3));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0;letter-spacing:-.5px}
+.owner-avatar{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--a),var(--a3));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0}
 .owner-avatar.empty{background:rgba(255,255,255,.07);border:1px dashed rgba(255,255,255,.15)}
 .owner-pick-val{flex:1;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .owner-pick-ph{color:var(--t3)}
-.owner-pick-arrow{color:var(--t3);font-size:11px;transition:transform .2s;flex-shrink:0;margin-left:auto}
+.owner-pick-arrow{color:var(--t3);font-size:11px;transition:transform .2s;margin-left:auto}
 .owner-pick-trigger.open .owner-pick-arrow{transform:rotate(180deg)}
-
-.owner-dd{position:absolute;top:calc(100% + 6px);left:0;right:0;background:#12121e;border:1px solid rgba(99,102,241,.25);border-radius:var(--r);box-shadow:0 20px 56px rgba(0,0,0,.65);z-index:310;overflow:hidden;animation:ddIn .18s}
+.owner-dd{position:absolute;top:calc(100%+6px);left:0;right:0;background:#12121e;border:1px solid rgba(99,102,241,.25);border-radius:var(--r);box-shadow:0 20px 56px rgba(0,0,0,.65);z-index:310;overflow:hidden;animation:ddIn .18s}
 .owner-dd-search{padding:10px 12px;border-bottom:1px solid rgba(99,102,241,.15)}
 .owner-dd-search input{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(99,102,241,.2);border-radius:8px;padding:8px 12px;color:var(--t);font-size:13px;outline:none;font-family:inherit}
 .owner-dd-search input:focus{border-color:#818cf8}
@@ -271,8 +274,8 @@ td.ac{width:38px;text-align:center}
 .owner-opt.sel .owner-opt-name{color:#c4b5fd;font-weight:600}
 .owner-opt-ck{color:#818cf8;font-size:12px;opacity:0}
 .owner-opt.sel .owner-opt-ck{opacity:1}
-.owner-err-msg{font-size:12px;color:var(--err);margin-top:8px;display:none}
-.owner-err-msg.show{display:block}
+.owner-err{font-size:12px;color:var(--err);margin-top:8px;display:none}
+.owner-err.show{display:block}
 
 /* TOASTS */
 .tw{position:fixed;bottom:24px;right:24px;display:flex;flex-direction:column;gap:8px;z-index:999}
@@ -312,16 +315,26 @@ td.ac{width:38px;text-align:center}
         <div class="stat"><div class="stat-n" id="s-leads">0</div><div class="stat-l">Leads sent</div></div>
         <div class="stat"><div class="stat-n" id="s-err">0</div><div class="stat-l">Errors</div></div>
       </div>
+
+      <!-- IN-PROGRESS BANNER -->
+      <div class="inprogress-banner" id="inprogress-banner">
+        <div class="inprogress-spinner"></div>
+        <div class="inprogress-body">
+          <div class="inprogress-label">⏳ Import in progress</div>
+          <div class="inprogress-title" id="inprogress-name">—</div>
+          <div class="inprogress-sub">Your contacts are currently being imported into the CRM.<br>You'll receive a <strong>Slack message</strong> as soon as the import is fully completed.</div>
+        </div>
+      </div>
+
       <div class="sec-title">Import history <span class="sec-badge" id="hist-badge">0</span></div>
-      <!-- ✦ scrollable history container -->
-      <div class="hist-scroll" id="hist-scroll">
+      <div class="hist-scroll">
         <div id="hist-list"></div>
         <div class="hist-empty" id="hist-empty"><div class="ei">📭</div><p>No imports yet. Start your first one above.</p></div>
       </div>
     </div>
   </div>
 
-  <!-- IMPORT VIEW -->
+  <!-- IMPORT VIEW (editing only, never shown while sending) -->
   <div class="view" id="view-import">
     <div class="imp-bar">
       <div class="back" onclick="goHome()">←</div>
@@ -335,13 +348,9 @@ td.ac{width:38px;text-align:center}
           <div class="csv-drop-inner"><span>📂</span><span class="csv-fname" id="csv-fname">Import CSV</span></div>
         </label>
         <button class="btn btn-ghost btn-sm" onclick="addRow()" id="btn-add">＋ Add row</button>
-        <button class="btn btn-danger btn-sm" onclick="clearAll()" id="btn-clear">🗑</button>
+        <button class="btn btn-danger btn-sm" onclick="clearAll()">🗑</button>
         <button class="btn btn-primary btn-sm" id="send-btn" onclick="askConfirm()" disabled>🚀 Send to HubSpot</button>
       </div>
-    </div>
-    <div class="completed-banner" id="completed-banner">
-      <span>✅ This import has been sent to HubSpot. To add more leads, start a new import.</span>
-      <button class="btn btn-ghost btn-sm" onclick="openNewModal()" style="margin-left:auto">＋ New Import</button>
     </div>
     <div class="pb"><div class="pf" id="progress"></div></div>
     <div class="table-wrap">
@@ -401,8 +410,6 @@ td.ac{width:38px;text-align:center}
     <div class="modal-badge">📊 CSV Import</div>
     <h3>Map your columns</h3>
     <p class="modal-desc">Detected <strong id="map-col-count">0</strong> columns · <strong id="map-row-count">0</strong> rows. Match each CSV column to its destination field.</p>
-
-    <!-- MAPPING: CSV col (left) → HubSpot field (right) -->
     <div class="map-grid">
       <div class="map-row">
         <select class="map-csv-sel" id="map-linkedin"></select>
@@ -415,19 +422,16 @@ td.ac{width:38px;text-align:center}
         <div class="map-target">LinkedIn Company URL<span class="star">*</span></div>
       </div>
     </div>
-
     <div class="map-divider"></div>
-
-    <!-- OWNER PICKER — premium separated block -->
     <div class="owner-block">
       <div class="owner-block-header">
         <div class="owner-block-icon">👤</div>
         <div>
           <div class="owner-block-title">Assign all leads to one owner</div>
-          <div class="owner-block-sub">This owner will be applied to every imported lead</div>
+          <div class="owner-block-sub">Applied to every imported lead globally</div>
         </div>
       </div>
-      <div class="sel-wrap" id="owner-sel-wrap">
+      <div class="owner-pick-wrap" id="owner-pick-wrap">
         <div class="owner-pick-trigger" id="owner-pick-trig" tabindex="0" onclick="toggleOwnerPick()" onkeydown="if(event.key==='Enter'||event.key===' ')toggleOwnerPick()">
           <div class="owner-avatar empty" id="owner-av">👤</div>
           <span class="owner-pick-val owner-pick-ph" id="owner-pick-val">Select a HubSpot owner…</span>
@@ -438,12 +442,11 @@ td.ac{width:38px;text-align:center}
           <div class="owner-dd-list" id="owner-dd-list"></div>
         </div>
       </div>
-      <div class="owner-err-msg" id="owner-err-msg">Please select a HubSpot owner before importing.</div>
+      <div class="owner-err" id="owner-err">Please select a HubSpot owner before importing.</div>
     </div>
-
     <div class="modal-actions" style="margin-top:24px">
       <button class="btn btn-ghost" onclick="closeMap()">Cancel</button>
-      <button class="btn btn-primary" onclick="confirmMap()">Import <span id="map-confirm-count">0</span> leads →</button>
+      <button class="btn btn-primary" onclick="confirmMap()">Import <span id="map-count">0</span> leads →</button>
     </div>
   </div>
 </div>
@@ -469,10 +472,11 @@ const WEBHOOK='https://api.clay.com/v3/sources/webhook/pull-in-data-from-a-webho
 const BYPASS='HQ5JV0qhkuqeoAAcOy1vaNIWgxac1dRn';
 const USERS=["Gwenn JAMBOU","Nolwenn André","Victoria Hanne","Maxence Jaubert","Jacopo Carretta","Aurélie Pureur","Noémie de Montmarin","Fanny Maynadie","Valentin Burr","Team IT","Sara Poretta","Marie Tiberghien","Imane Omri","Pauline NUGUES","Emeline Wulstecke","Justine Gager","Eléonore Guillemot","Kevin Rignault","Colm O'Brien","Clara Facchetti","Becca Guinchard","Duncan Perret","Laura POUDEVIGNE","Chakir SMIRES","Sofia Taleb Benjelloun","Dylan Pujol","Sacha Ghanem","Capucine LEVY","Mélina LE MIGNON","Emmanuelle Sillé","François Lehec","Karla Rousselet","Clément ATTOU","Evana Le Puil","Maxime BOUCHER","Lolita Soligny","Max HANCE","Julien Hirtzig","Camille Brun","Vianney Mathorel","Marie Tavenier","Florian Donet","David BERNARD","Mélanie Chauvin","Margot Pourailly","Emeric Kubiak","Aurore Lefebvre","Paul Stout","Noémie GRILLOT","Charly Arnaud","Jeanne DARBIN","Wendy BECHET","Lauren Tait","Alessandro De Valerio","Luciano Cipolla","Alexandre Collignon","FANNY POURCINE","Simon Baron","Christopher ROUSSEL","Charlie VEREAU","Tales MARRA","Marine Degruson","Elodie PINHEIRA","Julie BABEAU","ROMAIN TIRUEL","Aisha Roukhamieh-Mckinna","Svetlana Pashina","Laura Weerawardana","Christophe HOAREAU","Yohan LE CLECH","Mathieu Parisot","Arthur BEQUIN","Valentin Beaudon","Jules Jatteau","Siril Maurice","Antoine GOEHRS","Rebecca COTTIGNIES","Arthur DAVIES","Quentin CERVELLE","Emmanuelle Cortes","JB Comte"];
 
-let leads=[],idc=0,importName='',importedBy='',importDone=false,hist=[];
-let csvRawHeaders=[],csvRawRows=[];
-let ownerPickVal='';
-try{hist=JSON.parse(localStorage.getItem('hs_v6')||'[]');}catch{}
+let leads=[],idc=0,importName='',importedBy='',hist=[];
+let csvRawHeaders=[],csvRawRows=[],ownerPickVal='';
+// activeJob: tracks the running send job so home can poll it
+let activeJob=null;
+try{hist=JSON.parse(localStorage.getItem('hs_v7')||'[]');}catch{}
 
 // ── PARALLAX ──
 document.addEventListener('mousemove',e=>{
@@ -482,80 +486,67 @@ document.addEventListener('mousemove',e=>{
   document.getElementById('o3').style.transform=`translate(${x*.4}px,${y*.4}px)`;
 });
 
-// ─────────────────────────────────────
-// MODAL SELECT — "Created by"
-// ─────────────────────────────────────
+// ── MODAL SELECT — Created by ──
 let mSelVal='';
 function buildMSelList(f=''){
-  const list=document.getElementById('modal-sel-list');
   const items=USERS.filter(u=>!f||u.toLowerCase().includes(f.toLowerCase()));
-  list.innerHTML=items.map(u=>`<div class="sel-opt${mSelVal===u?' selected':''}" onclick="pickMSel('${esc(u)}')">${esc(u)}<span class="ck">✓</span></div>`).join('');
+  document.getElementById('modal-sel-list').innerHTML=items.map(u=>`<div class="sel-opt${mSelVal===u?' selected':''}" onclick="pickMSel('${esc(u)}')">${esc(u)}<span class="ck">✓</span></div>`).join('');
 }
 function toggleMSel(){
-  const dd=document.getElementById('modal-sel-dd');
-  const tr=document.getElementById('modal-sel-trig');
+  const dd=document.getElementById('modal-sel-dd'),tr=document.getElementById('modal-sel-trig');
   const open=dd.style.display!=='none';
-  dd.style.display=open?'none':'block';
-  tr.classList.toggle('open',!open);
+  dd.style.display=open?'none':'block';tr.classList.toggle('open',!open);
   if(!open){document.getElementById('modal-sel-srch').value='';buildMSelList();setTimeout(()=>document.getElementById('modal-sel-srch').focus(),50);}
 }
 function filterMSel(v){buildMSelList(v);}
 function pickMSel(u){
   mSelVal=u;
-  const el=document.getElementById('modal-sel-val');
-  el.textContent=u;el.classList.remove('sel-ph');
+  const el=document.getElementById('modal-sel-val');el.textContent=u;el.classList.remove('sel-ph');
   document.getElementById('modal-sel-trig').classList.remove('err','open');
-  document.getElementById('modal-sel-dd').style.display='none';
-  buildMSelList();
+  document.getElementById('modal-sel-dd').style.display='none';buildMSelList();
 }
+
+// close dropdowns on outside click
 document.addEventListener('click',e=>{
   if(!document.getElementById('modal-sel-wrap')?.contains(e.target)){
     document.getElementById('modal-sel-dd').style.display='none';
     document.getElementById('modal-sel-trig')?.classList.remove('open');
   }
-  if(!document.getElementById('owner-sel-wrap')?.contains(e.target)){
+  if(!document.getElementById('owner-pick-wrap')?.contains(e.target)){
     document.getElementById('owner-dd').style.display='none';
     document.getElementById('owner-pick-trig')?.classList.remove('open');
   }
 });
 
-// ─────────────────────────────────────
-// NEW IMPORT MODAL
-// ─────────────────────────────────────
+// ── NEW IMPORT MODAL ──
 function openNewModal(){
+  // Block new import if one is running
+  if(activeJob){toast('An import is already in progress. Please wait for it to complete.','info');return;}
   mSelVal='';
   document.getElementById('m-name').value='';
   document.getElementById('m-name').classList.remove('err');
-  const tr=document.getElementById('modal-sel-trig');
-  tr.classList.remove('err','open');
-  const vEl=document.getElementById('modal-sel-val');
-  vEl.textContent='— Select your name —';vEl.classList.add('sel-ph');
-  document.getElementById('modal-sel-dd').style.display='none';
-  buildMSelList();
+  const tr=document.getElementById('modal-sel-trig');tr.classList.remove('err','open');
+  const vEl=document.getElementById('modal-sel-val');vEl.textContent='— Select your name —';vEl.classList.add('sel-ph');
+  document.getElementById('modal-sel-dd').style.display='none';buildMSelList();
   document.getElementById('modal-new').classList.add('open');
   setTimeout(()=>document.getElementById('m-name').focus(),120);
 }
 function closeNew(){document.getElementById('modal-new').classList.remove('open');}
 function confirmNew(){
-  const n=document.getElementById('m-name').value.trim();
-  let ok=true;
+  const n=document.getElementById('m-name').value.trim();let ok=true;
   document.getElementById('m-name').classList.toggle('err',!n);if(!n)ok=false;
   document.getElementById('modal-sel-trig').classList.toggle('err',!mSelVal);if(!mSelVal)ok=false;
-  if(!ok)return;
-  closeNew();
-  importName=n;importedBy=mSelVal;leads=[];idc=0;importDone=false;
+  if(!ok)return;closeNew();
+  importName=n;importedBy=mSelVal;leads=[];idc=0;
   resetCsvZone();
   document.getElementById('imp-title').textContent=n;
   document.getElementById('imp-by').textContent='By '+importedBy;
-  setLocked(false);
   document.getElementById('view-home').classList.remove('active');
   document.getElementById('view-import').classList.add('active');
   render();
 }
 
-// ─────────────────────────────────────
-// CSV UPLOAD ZONE
-// ─────────────────────────────────────
+// ── CSV UPLOAD ──
 function resetCsvZone(){
   document.getElementById('csv-input').value='';
   document.getElementById('csv-fname').textContent='Import CSV';
@@ -582,17 +573,11 @@ function parseCSVFile(file){
 }
 function parseCSVLine(l){const r=[];let c='',q=false;for(const ch of l){if(ch==='"'){q=!q;}else if(ch===','&&!q){r.push(c);c='';}else c+=ch;}r.push(c);return r;}
 
-// ─────────────────────────────────────
-// OWNER PICKER
-// ─────────────────────────────────────
-function initials(name){
-  const p=name.trim().split(/\s+/);
-  return(p[0]?.[0]||'')+(p[1]?.[0]||'').toUpperCase();
-}
+// ── OWNER PICKER ──
+function initials(name){const p=name.trim().split(/\s+/);return((p[0]?.[0]||'')+(p[1]?.[0]||'')).toUpperCase();}
 function buildOwnerList(f=''){
-  const list=document.getElementById('owner-dd-list');
   const items=USERS.filter(u=>!f||u.toLowerCase().includes(f.toLowerCase()));
-  list.innerHTML=items.map(u=>`
+  document.getElementById('owner-dd-list').innerHTML=items.map(u=>`
     <div class="owner-opt${ownerPickVal===u?' sel':''}" onclick="pickOwner('${esc(u)}')">
       <div class="owner-opt-av">${initials(u)}</div>
       <span class="owner-opt-name">${esc(u)}</span>
@@ -600,141 +585,82 @@ function buildOwnerList(f=''){
     </div>`).join('');
 }
 function toggleOwnerPick(){
-  const dd=document.getElementById('owner-dd');
-  const tr=document.getElementById('owner-pick-trig');
+  const dd=document.getElementById('owner-dd'),tr=document.getElementById('owner-pick-trig');
   const open=dd.style.display!=='none';
-  dd.style.display=open?'none':'block';
-  tr.classList.toggle('open',!open);
+  dd.style.display=open?'none':'block';tr.classList.toggle('open',!open);
   if(!open){document.getElementById('owner-srch').value='';buildOwnerList();setTimeout(()=>document.getElementById('owner-srch').focus(),50);}
 }
 function filterOwnerPick(v){buildOwnerList(v);}
 function pickOwner(u){
   ownerPickVal=u;
-  const av=document.getElementById('owner-av');
-  av.textContent=initials(u);av.classList.remove('empty');
-  const val=document.getElementById('owner-pick-val');
-  val.textContent=u;val.classList.remove('owner-pick-ph');
-  document.getElementById('owner-pick-trig').classList.add('has-val');
+  const av=document.getElementById('owner-av');av.textContent=initials(u);av.classList.remove('empty');
+  const val=document.getElementById('owner-pick-val');val.textContent=u;val.classList.remove('owner-pick-ph');
   document.getElementById('owner-pick-trig').classList.remove('open');
   document.getElementById('owner-dd').style.display='none';
-  document.getElementById('owner-err-msg').classList.remove('show');
+  document.getElementById('owner-err').classList.remove('show');
   buildOwnerList();
 }
 
-// ─────────────────────────────────────
-// MAPPING MODAL
-// ─────────────────────────────────────
+// ── CSV MAPPING MODAL ──
 const MAP_ALIASES={
   linkedinUrl:['linkedinurl','linkedin','profileurl','liurl','linkedinprofile','personlinkedin','linkedin_url','profile_url'],
   companyUrl:['companylinkedinurl','companylinkedin','companyurl','linkedincompany','company_linkedin','company_url']
 };
 function autoMap(headers){
   const norm=h=>h.toLowerCase().replace(/[^a-z_]/g,'').replace(/\s+/g,'_');
-  return{
-    linkedinUrl:headers.findIndex(h=>MAP_ALIASES.linkedinUrl.includes(norm(h))),
-    companyUrl:headers.findIndex(h=>MAP_ALIASES.companyUrl.includes(norm(h)))
-  };
+  return{linkedinUrl:headers.findIndex(h=>MAP_ALIASES.linkedinUrl.includes(norm(h))),
+         companyUrl:headers.findIndex(h=>MAP_ALIASES.companyUrl.includes(norm(h)))};
 }
 function openMapModal(){
-  const hdrs=csvRawHeaders;
-  const mapping=autoMap(hdrs);
+  const hdrs=csvRawHeaders,mapping=autoMap(hdrs);
   document.getElementById('map-col-count').textContent=hdrs.length;
   document.getElementById('map-row-count').textContent=csvRawRows.length;
-  document.getElementById('map-confirm-count').textContent=csvRawRows.length;
-
-  // Populate selects
+  document.getElementById('map-count').textContent=csvRawRows.length;
   const opts='<option value="-1">— Not mapped —</option>'+hdrs.map((h,i)=>`<option value="${i}">${esc(h)}</option>`).join('');
-  ['map-linkedin','map-company'].forEach(id=>{
-    const sel=document.getElementById(id);
-    sel.innerHTML=opts;sel.classList.remove('auto');
-  });
-  const setMap=(id,idx)=>{
-    if(idx>=0){const s=document.getElementById(id);s.value=idx;s.classList.add('auto');}
-  };
-  setMap('map-linkedin',mapping.linkedinUrl);
-  setMap('map-company',mapping.companyUrl);
-
-  // Reset owner picker
+  ['map-linkedin','map-company'].forEach(id=>{const s=document.getElementById(id);s.innerHTML=opts;s.classList.remove('auto');});
+  const setMap=(id,idx)=>{if(idx>=0){const s=document.getElementById(id);s.value=idx;s.classList.add('auto');}};
+  setMap('map-linkedin',mapping.linkedinUrl);setMap('map-company',mapping.companyUrl);
   ownerPickVal='';
-  document.getElementById('owner-av').textContent='👤';
-  document.getElementById('owner-av').classList.add('empty');
-  const vEl=document.getElementById('owner-pick-val');
-  vEl.textContent='Select a HubSpot owner…';vEl.classList.add('owner-pick-ph');
-  document.getElementById('owner-pick-trig').classList.remove('has-val','open');
+  document.getElementById('owner-av').textContent='👤';document.getElementById('owner-av').classList.add('empty');
+  const vEl=document.getElementById('owner-pick-val');vEl.textContent='Select a HubSpot owner…';vEl.classList.add('owner-pick-ph');
+  document.getElementById('owner-pick-trig').classList.remove('open');
   document.getElementById('owner-dd').style.display='none';
-  document.getElementById('owner-err-msg').classList.remove('show');
+  document.getElementById('owner-err').classList.remove('show');
   buildOwnerList();
-
   document.getElementById('modal-map').classList.add('open');
 }
-function closeMap(){
-  document.getElementById('modal-map').classList.remove('open');
-  resetCsvZone();
-}
+function closeMap(){document.getElementById('modal-map').classList.remove('open');resetCsvZone();}
 function confirmMap(){
   const liIdx=parseInt(document.getElementById('map-linkedin').value);
   const coIdx=parseInt(document.getElementById('map-company').value);
   if(liIdx<0||coIdx<0){toast('Please map both LinkedIn columns.','error');return;}
-  if(!ownerPickVal){document.getElementById('owner-err-msg').classList.add('show');return;}
-
+  if(!ownerPickVal){document.getElementById('owner-err').classList.add('show');return;}
   let added=0;
   csvRawRows.forEach(cols=>{
-    const li=(cols[liIdx]||'').trim();
-    const co=(cols[coIdx]||'').trim();
+    const li=(cols[liIdx]||'').trim(),co=(cols[coIdx]||'').trim();
     if(li||co){leads.push({id:++idc,status:'idle',linkedinUrl:li,companyUrl:co,user:ownerPickVal});added++;}
   });
-  document.getElementById('modal-map').classList.remove('open');
-  resetCsvZone();
-  render();
-  toast(added+' lead'+(added!==1?'s':'')+' imported','success');
+  document.getElementById('modal-map').classList.remove('open');resetCsvZone();
+  render();toast(added+' lead'+(added!==1?'s':'')+' imported','success');
 }
 
-// ─────────────────────────────────────
-// NAVIGATION
-// ─────────────────────────────────────
-function goHome(){
-  document.getElementById('view-import').classList.remove('active');
-  document.getElementById('view-home').classList.add('active');
-  leads=[];idc=0;renderHome();
-}
-function setLocked(v){
-  importDone=v;
-  document.getElementById('btn-add').disabled=v;
-  document.getElementById('btn-clear').disabled=v;
-  document.getElementById('send-btn').style.display=v?'none':'inline-flex';
-  document.getElementById('csv-drop').style.pointerEvents=v?'none':'auto';
-  document.getElementById('csv-drop').style.opacity=v?'.4':'1';
-  document.getElementById('completed-banner').classList.toggle('show',v);
-}
-
-// ─────────────────────────────────────
-// TABLE CUSTOM SELECT
-// ─────────────────────────────────────
+// ── TABLE CUSTOM SELECT ──
 let openTsel=null;
 function closeTsel(){
-  if(openTsel){
-    document.getElementById('tdd-'+openTsel)?.remove();
-    document.getElementById('ttr-'+openTsel)?.classList.remove('open');
-    openTsel=null;
-  }
+  if(openTsel){document.getElementById('tdd-'+openTsel)?.remove();document.getElementById('ttr-'+openTsel)?.classList.remove('open');openTsel=null;}
 }
 document.addEventListener('click',e=>{if(!e.target.closest('.tsel-wrap'))closeTsel();});
 function renderTsel(id,lead){
   const val=lead.user,inv=lead._t&&!val?' inv':'';
-  return`<div class="tsel-wrap"><div class="tsel-trigger${inv}${importDone?' disabled':''}" id="ttr-${id}" onclick="toggleTsel(${id},this)" tabindex="0"><span class="tsel-val${val?'':' tsel-ph'}">${val?esc(val):'— Select owner —'}</span><span class="tsel-arr">▾</span></div></div>`;
+  return`<div class="tsel-wrap"><div class="tsel-trigger${inv}" id="ttr-${id}" onclick="toggleTsel(${id},this)" tabindex="0"><span class="tsel-val${val?'':' tsel-ph'}">${val?esc(val):'— Select owner —'}</span><span class="tsel-arr">▾</span></div></div>`;
 }
 function toggleTsel(id,el){
-  if(importDone)return;
-  if(openTsel===id){closeTsel();return;}
-  closeTsel();openTsel=id;el.classList.add('open');
-  const lead=leads.find(l=>l.id===id);
-  const rect=el.getBoundingClientRect();
-  const dd=document.createElement('div');
-  dd.className='tsel-dd';dd.id='tdd-'+id;
+  if(openTsel===id){closeTsel();return;}closeTsel();openTsel=id;el.classList.add('open');
+  const lead=leads.find(l=>l.id===id);const rect=el.getBoundingClientRect();
+  const dd=document.createElement('div');dd.className='tsel-dd';dd.id='tdd-'+id;
   dd.style.cssText=`top:${rect.bottom+window.scrollY+4}px;left:${rect.left}px`;
   dd.innerHTML=`<div class="tsel-search"><input type="text" placeholder="Search…" oninput="filterTsel(${id},this.value)" id="tsi-${id}"></div><div class="tsel-list" id="tsl-${id}"></div>`;
-  document.body.appendChild(dd);
-  buildTselList(id,'',lead.user);
+  document.body.appendChild(dd);buildTselList(id,'',lead.user);
   setTimeout(()=>document.getElementById('tsi-'+id)?.focus(),40);
 }
 function buildTselList(id,f,cur){
@@ -743,46 +669,33 @@ function buildTselList(id,f,cur){
   list.innerHTML=items.map(u=>`<div class="tsel-opt${cur===u?' sel':''}" onclick="pickTsel(${id},'${esc(u)}')">${esc(u)}${cur===u?'<span>✓</span>':''}</div>`).join('');
 }
 function filterTsel(id,v){const l=leads.find(l=>l.id===id);buildTselList(id,v,l?l.user:'');}
-function pickTsel(id,u){
-  const l=leads.find(l=>l.id===id);if(!l)return;
-  l._t=true;l.user=u;closeTsel();render();footer();btn();
-}
+function pickTsel(id,u){const l=leads.find(l=>l.id===id);if(!l)return;l._t=true;l.user=u;closeTsel();render();footer();btn();}
 
-// ─────────────────────────────────────
-// LEADS
-// ─────────────────────────────────────
-function addRow(d={}){if(importDone)return;leads.push({id:++idc,linkedinUrl:'',companyUrl:'',user:'',status:'idle',...d});render();}
-function removeRow(id){if(importDone)return;leads=leads.filter(l=>l.id!==id);render();}
-function clearAll(){if(importDone||!leads.length||!confirm('Clear all leads?'))return;leads=[];render();}
+// ── LEADS ──
+function addRow(d={}){leads.push({id:++idc,linkedinUrl:'',companyUrl:'',user:'',status:'idle',...d});render();}
+function removeRow(id){leads=leads.filter(l=>l.id!==id);render();}
+function clearAll(){if(!leads.length||!confirm('Clear all leads?'))return;leads=[];render();}
 function isValid(l){return l.linkedinUrl.trim()&&l.companyUrl.trim()&&l.user.trim();}
 function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
-function onInput(id,f,el){
-  if(importDone)return;const l=leads.find(l=>l.id===id);if(!l)return;
-  l[f]=el.value;if(l._t)el.classList.toggle('inv',!el.value.trim());footer();btn();
-}
-function onBlur(id,f,el){
-  if(importDone)return;const l=leads.find(l=>l.id===id);if(!l)return;
-  l._t=true;l[f]=el.value.trim();el.value=l[f];el.classList.toggle('inv',!l[f]);footer();btn();
-}
+function onInput(id,f,el){const l=leads.find(l=>l.id===id);if(!l)return;l[f]=el.value;if(l._t)el.classList.toggle('inv',!el.value.trim());footer();btn();}
+function onBlur(id,f,el){const l=leads.find(l=>l.id===id);if(!l)return;l._t=true;l[f]=el.value.trim();el.value=l[f];el.classList.toggle('inv',!l[f]);footer();btn();}
 function render(){
   const body=document.getElementById('leads-body');
   document.getElementById('empty-state').style.display=leads.length?'none':'block';
   body.innerHTML=leads.map((l,i)=>{
     const rc=l.status==='sent'?'row-ok':l.status==='error'?'row-err':'';
-    const ic=l.status==='sent'?'✅':l.status==='error'?'❌':l.status==='sending'?'⏳':isValid(l)?'🟢':'⚪';
-    const dis=importDone?' disabled':'';
+    const ic=isValid(l)?'🟢':'⚪';
     return`<tr class="${rc}">
       <td class="num">${i+1}</td>
-      <td><input class="ci${l._t&&!l.linkedinUrl?' inv':''}" value="${esc(l.linkedinUrl)}" placeholder="https://linkedin.com/in/…"${dis}
+      <td><input class="ci${l._t&&!l.linkedinUrl?' inv':''}" value="${esc(l.linkedinUrl)}" placeholder="https://linkedin.com/in/…"
         oninput="onInput(${l.id},'linkedinUrl',this)" onblur="onBlur(${l.id},'linkedinUrl',this)"></td>
-      <td><input class="ci${l._t&&!l.companyUrl?' inv':''}" value="${esc(l.companyUrl)}" placeholder="https://linkedin.com/company/…"${dis}
+      <td><input class="ci${l._t&&!l.companyUrl?' inv':''}" value="${esc(l.companyUrl)}" placeholder="https://linkedin.com/company/…"
         oninput="onInput(${l.id},'companyUrl',this)" onblur="onBlur(${l.id},'companyUrl',this)"></td>
       <td>${renderTsel(l.id,l)}</td>
       <td class="sc">${ic}</td>
-      <td class="ac"><button class="db"${dis} onclick="removeRow(${l.id})">✕</button></td>
+      <td class="ac"><button class="db" onclick="removeRow(${l.id})">✕</button></td>
     </tr>`;
-  }).join('');
-  footer();btn();
+  }).join('');footer();btn();
 }
 function footer(){
   const v=leads.filter(isValid).length;
@@ -790,9 +703,7 @@ function footer(){
 }
 function btn(){document.getElementById('send-btn').disabled=!(leads.length&&leads.every(isValid));}
 
-// ─────────────────────────────────────
-// CONFIRM + SEND
-// ─────────────────────────────────────
+// ── CONFIRM MODAL ──
 function askConfirm(){
   const v=leads.filter(isValid).length;
   document.getElementById('confirm-details').innerHTML=
@@ -802,39 +713,56 @@ function askConfirm(){
   document.getElementById('modal-confirm').classList.add('open');
 }
 function closeConfirm(){document.getElementById('modal-confirm').classList.remove('open');}
-function confirmSend(){closeConfirm();sendToHubspot();}
 
-async function sendToHubspot(){
-  leads.forEach(l=>l._t=true);
-  if(leads.some(l=>!isValid(l))){render();toast('Some rows are incomplete.','error');return;}
-  const sb=document.getElementById('send-btn');
-  sb.disabled=true;sb.textContent='⏳ Sending…';
-  const prog=document.getElementById('progress');
-  const results=[];let sent=0;
-  for(const lead of leads){
-    lead.status='sending';render();
-    const payload={importName,importedBy,linkedinUrl:lead.linkedinUrl,companyLinkedinUrl:lead.companyUrl,user:lead.user};
+// ── CONFIRM SEND — point of no return ──
+function confirmSend(){
+  closeConfirm();
+  // 1. Snapshot the leads to send
+  const snapshot=[...leads];
+  const name=importName,by=importedBy;
+  // 2. Immediately go to home — user never sees the import view again
+  document.getElementById('view-import').classList.remove('active');
+  document.getElementById('view-home').classList.add('active');
+  leads=[];idc=0;
+  // 3. Show in-progress banner
+  activeJob={name,by};
+  document.getElementById('inprogress-name').textContent=name;
+  document.getElementById('inprogress-banner').classList.add('show');
+  renderHome();
+  // 4. Run the send in the background
+  runSend(snapshot,name,by);
+}
+
+async function runSend(snapshot,name,by){
+  const results=[];
+  for(const lead of snapshot){
+    const payload={importName:name,importedBy:by,linkedinUrl:lead.linkedinUrl,companyLinkedinUrl:lead.companyUrl,user:lead.user};
     try{
       const res=await fetch('/api/send',{method:'POST',headers:{'Content-Type':'application/json','x-vercel-protection-bypass':BYPASS},body:JSON.stringify(payload)});
-      lead.status=res.ok?'sent':'error';
-    }catch{lead.status='error';}
-    results.push({...payload,status:lead.status});
-    sent++;prog.style.width=`${sent/leads.length*100}%`;render();
+      results.push({...payload,status:res.ok?'sent':'error'});
+    }catch{results.push({...payload,status:'error'});}
     await new Promise(r=>setTimeout(r,150));
   }
   const ok=results.filter(r=>r.status==='sent').length;
   const err=results.filter(r=>r.status==='error').length;
-  hist.unshift({id:Date.now(),name:importName,importedBy,date:new Date().toLocaleString('en-GB'),total:results.length,ok,err,leads:results});
-  try{localStorage.setItem('hs_v6',JSON.stringify(hist));}catch{}
-  toast(err===0?`✅ ${ok} lead${ok!==1?'s':''} sent!`:`${ok} sent, ${err} error${err!==1?'s':''}.`,err===0?'success':'error');
-  setTimeout(()=>prog.style.width='0%',1500);
-  setLocked(true);
-  if(err===0)setTimeout(goHome,1800);
+  // Save to history
+  hist.unshift({id:Date.now(),name,importedBy:by,date:new Date().toLocaleString('en-GB'),total:results.length,ok,err,leads:results});
+  try{localStorage.setItem('hs_v7',JSON.stringify(hist));}catch{}
+  // Clear in-progress state
+  activeJob=null;
+  document.getElementById('inprogress-banner').classList.remove('show');
+  renderHome();
+  toast(err===0?`✅ ${ok} lead${ok!==1?'s':''} sent — import complete!`:`${ok} sent, ${err} error${err!==1?'s':''}.`,err===0?'success':'error');
 }
 
-// ─────────────────────────────────────
-// HOME RENDER
-// ─────────────────────────────────────
+// ── NAVIGATION ──
+function goHome(){
+  document.getElementById('view-import').classList.remove('active');
+  document.getElementById('view-home').classList.add('active');
+  leads=[];idc=0;renderHome();
+}
+
+// ── HOME RENDER ──
 function renderHome(){
   document.getElementById('s-imp').textContent=hist.length;
   document.getElementById('s-leads').textContent=hist.reduce((a,b)=>a+b.total,0);
@@ -873,7 +801,7 @@ function toggleB(id){document.getElementById('bc'+id).classList.toggle('open');}
 function toast(msg,type='info'){
   const w=document.getElementById('tw');
   const el=document.createElement('div');el.className='toast '+type;el.textContent=msg;
-  w.appendChild(el);setTimeout(()=>el.remove(),4200);
+  w.appendChild(el);setTimeout(()=>el.remove(),5000);
 }
 renderHome();
 </script>
