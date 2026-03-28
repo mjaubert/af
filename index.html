@@ -306,7 +306,27 @@ td.ac{width:38px;text-align:center}
 .owner-err{font-size:12px;color:var(--err);margin-top:8px;display:none}
 .owner-err.show{display:block}
 
-/* TOASTS */
+/* CTA — ready state emphasis */
+#send-btn:not(:disabled){
+  padding:8px 20px;
+  font-size:13.5px;
+  box-shadow:0 4px 20px rgba(255,122,89,.45),0 0 0 1px rgba(255,122,89,.2);
+  letter-spacing:-.15px;
+}
+#send-btn:not(:disabled):hover{
+  transform:translateY(-2px);
+  box-shadow:0 6px 28px rgba(255,122,89,.55),0 0 0 1px rgba(255,122,89,.3);
+}
+/* CTA — disabled state */
+#send-btn:disabled{
+  opacity:.32;
+  cursor:not-allowed;
+  filter:grayscale(.3);
+}
+/* Tooltip on disabled */
+#send-btn:disabled{position:relative}
+#send-btn[title]{position:relative}
+
 .tw{position:fixed;bottom:24px;right:24px;display:flex;flex-direction:column;gap:8px;z-index:999}
 .toast{padding:12px 18px;border-radius:var(--r);font-size:13px;font-weight:500;box-shadow:0 8px 28px rgba(0,0,0,.55);animation:tIn .3s cubic-bezier(.34,1.46,.64,1);max-width:320px;backdrop-filter:blur(16px)}
 .toast.success{background:rgba(6,78,59,.95);color:#34d399;border:1px solid rgba(52,211,153,.2)}
@@ -368,7 +388,7 @@ td.ac{width:38px;text-align:center}
         </label>
         <button class="btn btn-ghost btn-sm" onclick="addRow()">＋ Add row</button>
         <button class="btn btn-danger btn-sm" onclick="clearAll()">🗑</button>
-        <button class="btn btn-primary btn-sm" id="send-btn" onclick="openConfigModal()" disabled>🚀 Send to HubSpot</button>
+        <button class="btn btn-primary btn-sm" id="send-btn" onclick="openConfigModal()" disabled title="Import setup is not complete yet. Please fill all required fields before continuing.">⚙️ Configure import in CRM</button>
       </div>
     </div>
     <div class="pb"><div class="pf" id="progress"></div></div>
@@ -1019,7 +1039,12 @@ function footer(){
   const v=leads.filter(isValid).length;
   document.getElementById('footer-info').textContent=`${leads.length} lead${leads.length!==1?'s':''} · ${v} valid · ${leads.length-v} incomplete`;
 }
-function btn(){document.getElementById('send-btn').disabled=!(leads.length&&leads.every(isValid));}
+function btn(){
+  const b=document.getElementById('send-btn');
+  const ready=leads.length>0&&leads.every(isValid);
+  b.disabled=!ready;
+  b.title=ready?'':'Import setup is not complete yet. Please fill all required fields before continuing.';
+}
 
 // NAVIGATION
 function goHome(){
