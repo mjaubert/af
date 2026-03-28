@@ -7,8 +7,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#08080e;--s2:#14141f;
-  --b:rgba(255,255,255,.07);--b2:rgba(255,255,255,.12);
+  --bg:#08080e;--b:rgba(255,255,255,.07);--b2:rgba(255,255,255,.12);
   --t:#f1f5f9;--t2:#94a3b8;--t3:#4a5568;
   --a:#ff7a59;--a2:#ff5c35;--a3:#f59e0b;
   --ok:#10b981;--err:#f87171;--pu:#6366f1;
@@ -16,7 +15,7 @@
 }
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--t);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 
-/* BG */
+/* ── BG ── */
 .bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 .bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:44px 44px}
 .orb{position:absolute;border-radius:50%;filter:blur(100px);transition:transform 1.6s cubic-bezier(.22,1,.36,1)}
@@ -25,14 +24,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .o3{width:500px;height:500px;background:radial-gradient(circle,rgba(245,158,11,.08),transparent 65%);top:35%;left:38%}
 .app{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column}
 
-/* HEADER */
+/* ── HEADER ── */
 header{padding:16px 32px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--b);backdrop-filter:blur(20px);background:rgba(8,8,14,.8);position:sticky;top:0;z-index:50}
 .logo{display:flex;align-items:center;gap:12px}
 .logo-mark{width:36px;height:36px;background:linear-gradient(135deg,var(--a),var(--a2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 4px 16px rgba(255,122,89,.3)}
 .logo-name{font-size:15px;font-weight:700;letter-spacing:-.3px}
 .logo-name em{font-style:normal;background:linear-gradient(135deg,var(--a),var(--a3));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 
-/* BUTTONS */
+/* ── BUTTONS ── */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:9px 20px;border-radius:var(--r);font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .18s;white-space:nowrap;letter-spacing:-.1px}
 .btn-primary{background:linear-gradient(135deg,var(--a),var(--a2));color:#fff;box-shadow:0 4px 16px rgba(255,122,89,.28)}
 .btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(255,122,89,.42)}
@@ -45,11 +44,13 @@ header{padding:16px 32px;display:flex;align-items:center;justify-content:space-b
 .btn-sm{padding:6px 13px;font-size:12px;border-radius:9px}
 .btn-lg{padding:13px 28px;font-size:15px;border-radius:14px}
 
-/* VIEWS */
+/* ── VIEWS ── */
 .view{display:none;flex:1;flex-direction:column}
 .view.active{display:flex}
 
-/* ═══ HOME ═══ */
+/* ══════════════════════════════════
+   HOME
+══════════════════════════════════ */
 .home{padding:56px 32px 48px;flex:1;max-width:860px;width:100%;margin:0 auto}
 .hero{text-align:center;margin-bottom:56px}
 .hero h2{font-size:44px;font-weight:800;letter-spacing:-2px;line-height:1.1;margin-bottom:14px}
@@ -63,17 +64,18 @@ header{padding:16px 32px;display:flex;align-items:center;justify-content:space-b
 .sec-title{font-size:13px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:10px;color:var(--t2);text-transform:uppercase;letter-spacing:.06em}
 .sec-badge{background:rgba(255,122,89,.15);color:var(--a);font-size:11px;padding:2px 9px;border-radius:999px;font-weight:700}
 
-/* IN-PROGRESS BANNER */
-.inprogress-banner{display:none;background:linear-gradient(135deg,rgba(99,102,241,.12),rgba(139,92,246,.08));border:1px solid rgba(99,102,241,.25);border-radius:var(--rl);padding:20px 24px;margin-bottom:24px;animation:fadeIn .4s ease}
-.inprogress-banner.show{display:flex;align-items:flex-start;gap:16px}
+/* IN-PROGRESS BANNERS */
+.inprogress-list{margin-bottom:24px;display:flex;flex-direction:column;gap:10px}
+.inprogress-card{background:linear-gradient(135deg,rgba(99,102,241,.12),rgba(139,92,246,.08));border:1px solid rgba(99,102,241,.25);border-radius:var(--rl);padding:18px 22px;display:flex;align-items:flex-start;gap:16px;animation:fadeIn .4s ease}
 @keyframes fadeIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
-.inprogress-spinner{width:36px;height:36px;border-radius:10px;border:2px solid rgba(99,102,241,.3);border-top-color:#818cf8;animation:spin 1s linear infinite;flex-shrink:0;margin-top:2px}
+.ip-spinner{width:34px;height:34px;border-radius:10px;border:2px solid rgba(99,102,241,.25);border-top-color:#818cf8;animation:spin 1s linear infinite;flex-shrink:0;margin-top:3px}
 @keyframes spin{to{transform:rotate(360deg)}}
-.inprogress-body{flex:1}
-.inprogress-label{display:inline-flex;align-items:center;gap:6px;background:rgba(99,102,241,.18);border:1px solid rgba(99,102,241,.3);border-radius:999px;padding:3px 10px;font-size:11px;font-weight:700;color:#a5b4fc;margin-bottom:8px}
-.inprogress-title{font-size:15px;font-weight:700;color:var(--t);margin-bottom:4px}
-.inprogress-sub{font-size:13px;color:var(--t3);line-height:1.6}
-.inprogress-sub strong{color:var(--t2)}
+.ip-body{flex:1}
+.ip-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(99,102,241,.18);border:1px solid rgba(99,102,241,.3);border-radius:999px;padding:3px 10px;font-size:11px;font-weight:700;color:#a5b4fc;margin-bottom:7px}
+.ip-name{font-size:15px;font-weight:700;color:var(--t);margin-bottom:3px}
+.ip-by{font-size:12px;color:var(--t3);margin-bottom:7px}
+.ip-msg{font-size:13px;color:var(--t3);line-height:1.6}
+.ip-msg strong{color:var(--t2)}
 
 /* HISTORY */
 .hist-scroll{max-height:480px;overflow-y:auto;padding-right:4px}
@@ -84,8 +86,6 @@ header{padding:16px 32px;display:flex;align-items:center;justify-content:space-b
 .hist-empty{text-align:center;padding:56px 24px;border:1px dashed rgba(255,255,255,.07);border-radius:var(--rl);background:rgba(255,255,255,.015)}
 .hist-empty .ei{font-size:40px;margin-bottom:12px;opacity:.5}
 .hist-empty p{font-size:14px;color:var(--t3)}
-
-/* HISTORY CARDS */
 .bcard{background:rgba(255,255,255,.035);border:1px solid var(--b);border-radius:var(--rl);margin-bottom:10px;overflow:hidden;transition:all .2s}
 .bcard:last-child{margin-bottom:0}
 .bcard:hover{background:rgba(255,255,255,.055);border-color:rgba(255,122,89,.2);box-shadow:0 6px 24px rgba(0,0,0,.28)}
@@ -111,10 +111,12 @@ header{padding:16px 32px;display:flex;align-items:center;justify-content:space-b
 .s-ok{color:#34d399!important;font-weight:600}
 .s-err{color:var(--err)!important;font-weight:600}
 
-/* ═══ OVERLAYS ═══ */
+/* ══════════════════════════════════
+   OVERLAYS / MODALS
+══════════════════════════════════ */
 .overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.78);backdrop-filter:blur(14px);display:none;align-items:center;justify-content:center;padding:20px}
 .overlay.open{display:flex}
-.modal{background:linear-gradient(160deg,#13131f 0%,#0f0f18 100%);border:1px solid rgba(255,255,255,.1);border-radius:var(--rxl);padding:40px;width:100%;max-width:480px;box-shadow:0 40px 80px rgba(0,0,0,.75),0 0 0 1px rgba(255,255,255,.04) inset;animation:mIn .28s cubic-bezier(.34,1.46,.64,1)}
+.modal{background:linear-gradient(160deg,#13131f,#0f0f18);border:1px solid rgba(255,255,255,.1);border-radius:var(--rxl);padding:40px;width:100%;max-width:480px;box-shadow:0 40px 80px rgba(0,0,0,.75),0 0 0 1px rgba(255,255,255,.04) inset;animation:mIn .28s cubic-bezier(.34,1.46,.64,1)}
 @keyframes mIn{from{transform:scale(.9) translateY(20px);opacity:0}to{transform:none;opacity:1}}
 .modal-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(255,122,89,.12);border:1px solid rgba(255,122,89,.2);border-radius:999px;padding:5px 14px;font-size:12px;font-weight:700;color:var(--a);margin-bottom:20px}
 .modal h3{font-size:24px;font-weight:800;letter-spacing:-.6px;margin-bottom:8px}
@@ -130,7 +132,7 @@ header{padding:16px 32px;display:flex;align-items:center;justify-content:space-b
 .modal-actions{display:flex;gap:10px;margin-top:8px}
 .modal-actions .btn{flex:1;padding:12px}
 
-/* CUSTOM SELECT — Created by */
+/* CUSTOM SELECT */
 .sel-wrap{position:relative}
 .sel-trigger{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:var(--r);padding:13px 16px;color:var(--t);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;transition:all .18s;user-select:none}
 .sel-trigger:hover{border-color:rgba(255,255,255,.16);background:rgba(255,255,255,.07)}
@@ -140,7 +142,7 @@ header{padding:16px 32px;display:flex;align-items:center;justify-content:space-b
 .sel-ph{color:var(--t3)}
 .sel-arrow{color:var(--t3);font-size:11px;transition:transform .2s;flex-shrink:0}
 .sel-trigger.open .sel-arrow{transform:rotate(180deg)}
-.sel-dd{position:absolute;top:calc(100%+6px);left:0;right:0;background:#13131f;border:1px solid rgba(255,255,255,.1);border-radius:var(--r);box-shadow:0 16px 48px rgba(0,0,0,.6);z-index:300;overflow:hidden;animation:ddIn .18s}
+.sel-dd{position:absolute;top:calc(100% + 6px);left:0;right:0;background:#13131f;border:1px solid rgba(255,255,255,.1);border-radius:var(--r);box-shadow:0 16px 48px rgba(0,0,0,.6);z-index:300;overflow:hidden;animation:ddIn .18s}
 @keyframes ddIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
 .sel-search{padding:10px 12px;border-bottom:1px solid var(--b)}
 .sel-search input{width:100%;background:rgba(255,255,255,.06);border:1px solid var(--b2);border-radius:8px;padding:8px 12px;color:var(--t);font-size:13px;outline:none;font-family:inherit}
@@ -161,12 +163,14 @@ header{padding:16px 32px;display:flex;align-items:center;justify-content:space-b
 .confirm-details div{margin-bottom:5px}
 .confirm-details div:last-child{margin-bottom:0}
 
-/* ═══ IMPORT VIEW ═══ */
+/* ══════════════════════════════════
+   IMPORT VIEW
+══════════════════════════════════ */
 .imp-bar{display:flex;align-items:center;gap:12px;padding:14px 32px;border-bottom:1px solid var(--b);backdrop-filter:blur(20px);background:rgba(8,8,14,.8);flex-wrap:wrap}
 .back{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid var(--b2);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--t2);font-size:16px;transition:all .18s;flex-shrink:0}
 .back:hover{background:rgba(255,255,255,.12);color:var(--t);border-color:rgba(255,122,89,.3)}
 .imp-info{flex:1;min-width:0}
-.imp-title{font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.imp-title-txt{font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .imp-by{font-size:12px;color:var(--t3);margin-top:2px}
 .imp-acts{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto}
 
@@ -188,8 +192,6 @@ th{padding:10px 14px;text-align:left;font-size:10px;font-weight:700;text-transfo
 th.req::after{content:' *';color:var(--err)}
 tbody tr{border-bottom:1px solid rgba(255,255,255,.035);transition:background .12s}
 tbody tr:hover{background:rgba(255,255,255,.022)}
-tbody tr.row-ok{background:rgba(16,185,129,.04);border-left:3px solid var(--ok)}
-tbody tr.row-err{background:rgba(248,113,113,.04);border-left:3px solid var(--err)}
 td{padding:5px 8px;vertical-align:middle}
 td.num{color:var(--t3);font-size:12px;text-align:center;width:36px}
 .ci{width:100%;background:transparent;border:1px solid transparent;border-radius:8px;padding:7px 10px;color:var(--t);font-size:13px;outline:none;transition:all .14s;font-family:inherit}
@@ -197,12 +199,10 @@ td.num{color:var(--t3);font-size:12px;text-align:center;width:36px}
 .ci:focus{border-color:var(--a);background:rgba(255,122,89,.05);box-shadow:0 0 0 2px rgba(255,122,89,.1)}
 .ci.inv{border-color:var(--err)!important;background:rgba(248,113,113,.06)!important}
 .ci::placeholder{color:rgba(255,255,255,.1)}
-.ci:disabled{opacity:.5;cursor:not-allowed}
 td.sc{width:36px;text-align:center;font-size:14px}
 td.ac{width:38px;text-align:center}
 .db{background:none;border:none;cursor:pointer;color:var(--t3);font-size:14px;padding:4px 7px;border-radius:6px;transition:all .14s}
 .db:hover{color:var(--err);background:rgba(248,113,113,.1)}
-.db:disabled{opacity:.3;cursor:not-allowed}
 .footer-bar{display:flex;align-items:center;justify-content:space-between;padding:11px 32px;background:rgba(8,8,14,.85);border-top:1px solid var(--b);font-size:12px;color:var(--t3);flex-wrap:wrap;gap:8px}
 .empty-state{text-align:center;padding:64px 24px;color:var(--t3)}
 .empty-state p{font-size:14px;margin-top:8px}
@@ -213,7 +213,6 @@ td.ac{width:38px;text-align:center}
 .tsel-trigger:hover{border-color:rgba(255,255,255,.1);background:rgba(255,255,255,.08)}
 .tsel-trigger.open{border-color:var(--a);background:rgba(255,122,89,.05);box-shadow:0 0 0 2px rgba(255,122,89,.1)}
 .tsel-trigger.inv{border-color:var(--err)!important}
-.tsel-trigger.disabled{opacity:.5;cursor:not-allowed;pointer-events:none}
 .tsel-val{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}
 .tsel-ph{color:rgba(255,255,255,.18)}
 .tsel-arr{color:var(--t3);font-size:9px;transition:transform .15s;flex-shrink:0}
@@ -229,7 +228,9 @@ td.ac{width:38px;text-align:center}
 .tsel-opt:hover{background:rgba(255,122,89,.1);color:var(--t)}
 .tsel-opt.sel{background:rgba(255,122,89,.15);color:var(--a);font-weight:600}
 
-/* ═══ CSV MAPPING MODAL ═══ */
+/* ══════════════════════════════════
+   CSV MAPPING MODAL
+══════════════════════════════════ */
 .map-modal{max-width:560px}
 .map-grid{display:flex;flex-direction:column;gap:8px;margin-bottom:8px}
 .map-row{display:grid;grid-template-columns:1fr 32px 1fr;align-items:center;gap:10px}
@@ -259,7 +260,7 @@ td.ac{width:38px;text-align:center}
 .owner-pick-ph{color:var(--t3)}
 .owner-pick-arrow{color:var(--t3);font-size:11px;transition:transform .2s;margin-left:auto}
 .owner-pick-trigger.open .owner-pick-arrow{transform:rotate(180deg)}
-.owner-dd{position:absolute;top:calc(100%+6px);left:0;right:0;background:#12121e;border:1px solid rgba(99,102,241,.25);border-radius:var(--r);box-shadow:0 20px 56px rgba(0,0,0,.65);z-index:310;overflow:hidden;animation:ddIn .18s}
+.owner-dd{position:absolute;top:calc(100% + 6px);left:0;right:0;background:#12121e;border:1px solid rgba(99,102,241,.25);border-radius:var(--r);box-shadow:0 20px 56px rgba(0,0,0,.65);z-index:310;overflow:hidden;animation:ddIn .18s}
 .owner-dd-search{padding:10px 12px;border-bottom:1px solid rgba(99,102,241,.15)}
 .owner-dd-search input{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(99,102,241,.2);border-radius:8px;padding:8px 12px;color:var(--t);font-size:13px;outline:none;font-family:inherit}
 .owner-dd-search input:focus{border-color:#818cf8}
@@ -302,7 +303,7 @@ td.ac{width:38px;text-align:center}
     <button class="btn btn-primary" onclick="openNewModal()">＋ New Import</button>
   </header>
 
-  <!-- HOME -->
+  <!-- ═══ HOME ═══ -->
   <div class="view active" id="view-home">
     <div class="home">
       <div class="hero">
@@ -315,17 +316,8 @@ td.ac{width:38px;text-align:center}
         <div class="stat"><div class="stat-n" id="s-leads">0</div><div class="stat-l">Leads sent</div></div>
         <div class="stat"><div class="stat-n" id="s-err">0</div><div class="stat-l">Errors</div></div>
       </div>
-
-      <!-- IN-PROGRESS BANNER -->
-      <div class="inprogress-banner" id="inprogress-banner">
-        <div class="inprogress-spinner"></div>
-        <div class="inprogress-body">
-          <div class="inprogress-label">⏳ Import in progress</div>
-          <div class="inprogress-title" id="inprogress-name">—</div>
-          <div class="inprogress-sub">Your contacts are currently being imported into the CRM.<br>You'll receive a <strong>Slack message</strong> as soon as the import is fully completed.</div>
-        </div>
-      </div>
-
+      <!-- In-progress banners — one per active job -->
+      <div class="inprogress-list" id="inprogress-list"></div>
       <div class="sec-title">Import history <span class="sec-badge" id="hist-badge">0</span></div>
       <div class="hist-scroll">
         <div id="hist-list"></div>
@@ -334,12 +326,12 @@ td.ac{width:38px;text-align:center}
     </div>
   </div>
 
-  <!-- IMPORT VIEW (editing only, never shown while sending) -->
+  <!-- ═══ IMPORT VIEW ═══ -->
   <div class="view" id="view-import">
     <div class="imp-bar">
       <div class="back" onclick="goHome()">←</div>
       <div class="imp-info">
-        <div class="imp-title" id="imp-title">—</div>
+        <div class="imp-title-txt" id="imp-title">—</div>
         <div class="imp-by" id="imp-by">—</div>
       </div>
       <div class="imp-acts">
@@ -347,7 +339,7 @@ td.ac{width:38px;text-align:center}
           <input type="file" id="csv-input" accept=".csv" onchange="onCsvPick(event)">
           <div class="csv-drop-inner"><span>📂</span><span class="csv-fname" id="csv-fname">Import CSV</span></div>
         </label>
-        <button class="btn btn-ghost btn-sm" onclick="addRow()" id="btn-add">＋ Add row</button>
+        <button class="btn btn-ghost btn-sm" onclick="addRow()">＋ Add row</button>
         <button class="btn btn-danger btn-sm" onclick="clearAll()">🗑</button>
         <button class="btn btn-primary btn-sm" id="send-btn" onclick="askConfirm()" disabled>🚀 Send to HubSpot</button>
       </div>
@@ -474,9 +466,9 @@ const USERS=["Gwenn JAMBOU","Nolwenn André","Victoria Hanne","Maxence Jaubert",
 
 let leads=[],idc=0,importName='',importedBy='',hist=[];
 let csvRawHeaders=[],csvRawRows=[],ownerPickVal='';
-// activeJobs: array of {id, name, by} — multiple can run in parallel
+// activeJobs: multiple imports can run in parallel — no global block
 let activeJobs=[];
-try{hist=JSON.parse(localStorage.getItem('hs_v7')||'[]');}catch{}
+try{hist=JSON.parse(localStorage.getItem('hs_v8')||'[]');}catch{}
 
 // ── PARALLAX ──
 document.addEventListener('mousemove',e=>{
@@ -484,6 +476,19 @@ document.addEventListener('mousemove',e=>{
   document.getElementById('o1').style.transform=`translate(${x*.9}px,${y*.9}px)`;
   document.getElementById('o2').style.transform=`translate(${-x*.7}px,${-y*.7}px)`;
   document.getElementById('o3').style.transform=`translate(${x*.4}px,${y*.4}px)`;
+});
+
+// ── CLOSE DROPDOWNS ON OUTSIDE CLICK ──
+document.addEventListener('click',e=>{
+  if(!document.getElementById('modal-sel-wrap')?.contains(e.target)){
+    document.getElementById('modal-sel-dd').style.display='none';
+    document.getElementById('modal-sel-trig')?.classList.remove('open');
+  }
+  if(!document.getElementById('owner-pick-wrap')?.contains(e.target)){
+    document.getElementById('owner-dd').style.display='none';
+    document.getElementById('owner-pick-trig')?.classList.remove('open');
+  }
+  if(!e.target.closest('.tsel-wrap')) closeTsel();
 });
 
 // ── MODAL SELECT — Created by ──
@@ -506,26 +511,15 @@ function pickMSel(u){
   document.getElementById('modal-sel-dd').style.display='none';buildMSelList();
 }
 
-// close dropdowns on outside click
-document.addEventListener('click',e=>{
-  if(!document.getElementById('modal-sel-wrap')?.contains(e.target)){
-    document.getElementById('modal-sel-dd').style.display='none';
-    document.getElementById('modal-sel-trig')?.classList.remove('open');
-  }
-  if(!document.getElementById('owner-pick-wrap')?.contains(e.target)){
-    document.getElementById('owner-dd').style.display='none';
-    document.getElementById('owner-pick-trig')?.classList.remove('open');
-  }
-});
-
-// ── NEW IMPORT MODAL ── (never blocked — even during active jobs)
+// ── NEW IMPORT MODAL — always available, never blocked ──
 function openNewModal(){
   mSelVal='';
   document.getElementById('m-name').value='';
   document.getElementById('m-name').classList.remove('err');
-  const tr=document.getElementById('modal-sel-trig');tr.classList.remove('err','open');
+  document.getElementById('modal-sel-trig').classList.remove('err','open');
   const vEl=document.getElementById('modal-sel-val');vEl.textContent='— Select your name —';vEl.classList.add('sel-ph');
-  document.getElementById('modal-sel-dd').style.display='none';buildMSelList();
+  document.getElementById('modal-sel-dd').style.display='none';
+  buildMSelList();
   document.getElementById('modal-new').classList.add('open');
   setTimeout(()=>document.getElementById('m-name').focus(),120);
 }
@@ -534,7 +528,8 @@ function confirmNew(){
   const n=document.getElementById('m-name').value.trim();let ok=true;
   document.getElementById('m-name').classList.toggle('err',!n);if(!n)ok=false;
   document.getElementById('modal-sel-trig').classList.toggle('err',!mSelVal);if(!mSelVal)ok=false;
-  if(!ok)return;closeNew();
+  if(!ok)return;
+  closeNew();
   importName=n;importedBy=mSelVal;leads=[];idc=0;
   resetCsvZone();
   document.getElementById('imp-title').textContent=n;
@@ -563,7 +558,7 @@ function parseCSVFile(file){
     if(lines.length<2){toast('Empty or invalid CSV.','error');resetCsvZone();return;}
     csvRawHeaders=parseCSVLine(lines[0]).map(h=>h.trim());
     csvRawRows=[];
-    for(let i=1;i<lines.length;i++){const cols=parseCSVLine(lines[i]);if(cols.some(c=>c.trim()))csvRawRows.push(cols);}
+    for(let i=1;i<lines.length;i++){const c=parseCSVLine(lines[i]);if(c.some(x=>x.trim()))csvRawRows.push(c);}
     if(!csvRawRows.length){toast('No data rows found.','error');resetCsvZone();return;}
     openMapModal();
   };
@@ -604,20 +599,20 @@ const MAP_ALIASES={
   linkedinUrl:['linkedinurl','linkedin','profileurl','liurl','linkedinprofile','personlinkedin','linkedin_url','profile_url'],
   companyUrl:['companylinkedinurl','companylinkedin','companyurl','linkedincompany','company_linkedin','company_url']
 };
-function autoMap(headers){
-  const norm=h=>h.toLowerCase().replace(/[^a-z_]/g,'').replace(/\s+/g,'_');
-  return{linkedinUrl:headers.findIndex(h=>MAP_ALIASES.linkedinUrl.includes(norm(h))),
-         companyUrl:headers.findIndex(h=>MAP_ALIASES.companyUrl.includes(norm(h)))};
+function autoMap(h){
+  const n=s=>s.toLowerCase().replace(/[^a-z_]/g,'').replace(/\s+/g,'_');
+  return{linkedinUrl:h.findIndex(x=>MAP_ALIASES.linkedinUrl.includes(n(x))),
+         companyUrl:h.findIndex(x=>MAP_ALIASES.companyUrl.includes(n(x)))};
 }
 function openMapModal(){
-  const hdrs=csvRawHeaders,mapping=autoMap(hdrs);
-  document.getElementById('map-col-count').textContent=hdrs.length;
+  const h=csvRawHeaders,m=autoMap(h);
+  document.getElementById('map-col-count').textContent=h.length;
   document.getElementById('map-row-count').textContent=csvRawRows.length;
   document.getElementById('map-count').textContent=csvRawRows.length;
-  const opts='<option value="-1">— Not mapped —</option>'+hdrs.map((h,i)=>`<option value="${i}">${esc(h)}</option>`).join('');
+  const opts='<option value="-1">— Not mapped —</option>'+h.map((x,i)=>`<option value="${i}">${esc(x)}</option>`).join('');
   ['map-linkedin','map-company'].forEach(id=>{const s=document.getElementById(id);s.innerHTML=opts;s.classList.remove('auto');});
-  const setMap=(id,idx)=>{if(idx>=0){const s=document.getElementById(id);s.value=idx;s.classList.add('auto');}};
-  setMap('map-linkedin',mapping.linkedinUrl);setMap('map-company',mapping.companyUrl);
+  if(m.linkedinUrl>=0){const s=document.getElementById('map-linkedin');s.value=m.linkedinUrl;s.classList.add('auto');}
+  if(m.companyUrl>=0){const s=document.getElementById('map-company');s.value=m.companyUrl;s.classList.add('auto');}
   ownerPickVal='';
   document.getElementById('owner-av').textContent='👤';document.getElementById('owner-av').classList.add('empty');
   const vEl=document.getElementById('owner-pick-val');vEl.textContent='Select a HubSpot owner…';vEl.classList.add('owner-pick-ph');
@@ -629,17 +624,17 @@ function openMapModal(){
 }
 function closeMap(){document.getElementById('modal-map').classList.remove('open');resetCsvZone();}
 function confirmMap(){
-  const liIdx=parseInt(document.getElementById('map-linkedin').value);
-  const coIdx=parseInt(document.getElementById('map-company').value);
-  if(liIdx<0||coIdx<0){toast('Please map both LinkedIn columns.','error');return;}
+  const li=parseInt(document.getElementById('map-linkedin').value);
+  const co=parseInt(document.getElementById('map-company').value);
+  if(li<0||co<0){toast('Please map both LinkedIn columns.','error');return;}
   if(!ownerPickVal){document.getElementById('owner-err').classList.add('show');return;}
-  let added=0;
+  let n=0;
   csvRawRows.forEach(cols=>{
-    const li=(cols[liIdx]||'').trim(),co=(cols[coIdx]||'').trim();
-    if(li||co){leads.push({id:++idc,status:'idle',linkedinUrl:li,companyUrl:co,user:ownerPickVal});added++;}
+    const l=(cols[li]||'').trim(),c=(cols[co]||'').trim();
+    if(l||c){leads.push({id:++idc,status:'idle',linkedinUrl:l,companyUrl:c,user:ownerPickVal});n++;}
   });
   document.getElementById('modal-map').classList.remove('open');resetCsvZone();
-  render();toast(added+' lead'+(added!==1?'s':'')+' imported','success');
+  render();toast(n+' lead'+(n!==1?'s':'')+' imported','success');
 }
 
 // ── TABLE CUSTOM SELECT ──
@@ -647,7 +642,6 @@ let openTsel=null;
 function closeTsel(){
   if(openTsel){document.getElementById('tdd-'+openTsel)?.remove();document.getElementById('ttr-'+openTsel)?.classList.remove('open');openTsel=null;}
 }
-document.addEventListener('click',e=>{if(!e.target.closest('.tsel-wrap'))closeTsel();});
 function renderTsel(id,lead){
   const val=lead.user,inv=lead._t&&!val?' inv':'';
   return`<div class="tsel-wrap"><div class="tsel-trigger${inv}" id="ttr-${id}" onclick="toggleTsel(${id},this)" tabindex="0"><span class="tsel-val${val?'':' tsel-ph'}">${val?esc(val):'— Select owner —'}</span><span class="tsel-arr">▾</span></div></div>`;
@@ -680,20 +674,17 @@ function onBlur(id,f,el){const l=leads.find(l=>l.id===id);if(!l)return;l._t=true
 function render(){
   const body=document.getElementById('leads-body');
   document.getElementById('empty-state').style.display=leads.length?'none':'block';
-  body.innerHTML=leads.map((l,i)=>{
-    const rc=l.status==='sent'?'row-ok':l.status==='error'?'row-err':'';
-    const ic=isValid(l)?'🟢':'⚪';
-    return`<tr class="${rc}">
-      <td class="num">${i+1}</td>
-      <td><input class="ci${l._t&&!l.linkedinUrl?' inv':''}" value="${esc(l.linkedinUrl)}" placeholder="https://linkedin.com/in/…"
-        oninput="onInput(${l.id},'linkedinUrl',this)" onblur="onBlur(${l.id},'linkedinUrl',this)"></td>
-      <td><input class="ci${l._t&&!l.companyUrl?' inv':''}" value="${esc(l.companyUrl)}" placeholder="https://linkedin.com/company/…"
-        oninput="onInput(${l.id},'companyUrl',this)" onblur="onBlur(${l.id},'companyUrl',this)"></td>
-      <td>${renderTsel(l.id,l)}</td>
-      <td class="sc">${ic}</td>
-      <td class="ac"><button class="db" onclick="removeRow(${l.id})">✕</button></td>
-    </tr>`;
-  }).join('');footer();btn();
+  body.innerHTML=leads.map((l,i)=>`<tr>
+    <td class="num">${i+1}</td>
+    <td><input class="ci${l._t&&!l.linkedinUrl?' inv':''}" value="${esc(l.linkedinUrl)}" placeholder="https://linkedin.com/in/…"
+      oninput="onInput(${l.id},'linkedinUrl',this)" onblur="onBlur(${l.id},'linkedinUrl',this)"></td>
+    <td><input class="ci${l._t&&!l.companyUrl?' inv':''}" value="${esc(l.companyUrl)}" placeholder="https://linkedin.com/company/…"
+      oninput="onInput(${l.id},'companyUrl',this)" onblur="onBlur(${l.id},'companyUrl',this)"></td>
+    <td>${renderTsel(l.id,l)}</td>
+    <td class="sc">${isValid(l)?'🟢':'⚪'}</td>
+    <td class="ac"><button class="db" onclick="removeRow(${l.id})">✕</button></td>
+  </tr>`).join('');
+  footer();btn();
 }
 function footer(){
   const v=leads.filter(isValid).length;
@@ -703,29 +694,30 @@ function btn(){document.getElementById('send-btn').disabled=!(leads.length&&lead
 
 // ── CONFIRM MODAL ──
 function askConfirm(){
-  const v=leads.filter(isValid).length;
   document.getElementById('confirm-details').innerHTML=
     `<div><strong>Import:</strong> ${esc(importName)}</div>
      <div><strong>Created by:</strong> ${esc(importedBy)}</div>
-     <div><strong>Leads to send:</strong> ${v}</div>`;
+     <div><strong>Leads to send:</strong> ${leads.filter(isValid).length}</div>`;
   document.getElementById('modal-confirm').classList.add('open');
 }
 function closeConfirm(){document.getElementById('modal-confirm').classList.remove('open');}
 
 // ── CONFIRM SEND — point of no return ──
+// Immediately redirects to home. The import is frozen.
+// A new import can be started at any time regardless.
 function confirmSend(){
   closeConfirm();
   const snapshot=[...leads];
   const name=importName,by=importedBy;
   const jobId=Date.now()+'_'+Math.random().toString(36).slice(2,7);
-  // 1. Go home immediately — import view is gone, this import is now locked
+  // 1. Redirect home immediately — this import is now locked
   document.getElementById('view-import').classList.remove('active');
   document.getElementById('view-home').classList.add('active');
   leads=[];idc=0;
-  // 2. Register job & refresh home (banner appears)
+  // 2. Register job (per-import lock, not global)
   activeJobs.push({id:jobId,name,by});
   renderHome();
-  // 3. Run send in background — does NOT block new imports
+  // 3. Send in background — app remains fully usable
   runSend(snapshot,name,by,jobId);
 }
 
@@ -742,8 +734,7 @@ async function runSend(snapshot,name,by,jobId){
   const ok=results.filter(r=>r.status==='sent').length;
   const err=results.filter(r=>r.status==='error').length;
   hist.unshift({id:Date.now(),name,importedBy:by,date:new Date().toLocaleString('en-GB'),total:results.length,ok,err,leads:results});
-  try{localStorage.setItem('hs_v7',JSON.stringify(hist));}catch{}
-  // Remove job from active list
+  try{localStorage.setItem('hs_v8',JSON.stringify(hist));}catch{}
   activeJobs=activeJobs.filter(j=>j.id!==jobId);
   renderHome();
   toast(err===0?`✅ "${name}" — ${ok} lead${ok!==1?'s':''} sent!`:`"${name}" — ${ok} sent, ${err} error${err!==1?'s':''}.`,err===0?'success':'error');
@@ -764,18 +755,17 @@ function renderHome(){
   document.getElementById('hist-badge').textContent=hist.length;
   document.getElementById('hist-empty').style.display=hist.length?'none':'block';
 
-  // Render all active job banners
-  const banner=document.getElementById('inprogress-banner');
-  if(activeJobs.length>0){
-    banner.classList.add('show');
-    document.getElementById('inprogress-name').innerHTML=activeJobs.map(j=>`
-      <div style="margin-bottom:${activeJobs.length>1?'10px':'0'};padding-bottom:${activeJobs.length>1?'10px':'0'};border-bottom:${activeJobs.length>1?'1px solid rgba(99,102,241,.15)':'none'}">
-        <div style="font-size:15px;font-weight:700;color:var(--t)">${esc(j.name)}</div>
-        <div style="font-size:12px;color:var(--t3);margin-top:2px">By ${esc(j.by)}</div>
-      </div>`).join('');
-  } else {
-    banner.classList.remove('show');
-  }
+  // Render in-progress banners (one per active job)
+  document.getElementById('inprogress-list').innerHTML=activeJobs.map(j=>`
+    <div class="inprogress-card">
+      <div class="ip-spinner"></div>
+      <div class="ip-body">
+        <div class="ip-badge">⏳ Import in progress</div>
+        <div class="ip-name">${esc(j.name)}</div>
+        <div class="ip-by">By ${esc(j.by)}</div>
+        <div class="ip-msg">Your contacts are currently being imported into the CRM.<br>You'll receive a <strong>Slack message</strong> as soon as the import is fully completed.</div>
+      </div>
+    </div>`).join('');
 
   document.getElementById('hist-list').innerHTML=hist.map(b=>`
     <div class="bcard" id="bc${b.id}">
