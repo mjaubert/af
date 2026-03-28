@@ -459,7 +459,90 @@ td.ac{width:38px;text-align:center}
 <script>
 const WEBHOOK='https://api.clay.com/v3/sources/webhook/pull-in-data-from-a-webhook-be430a93-c9a6-4222-832b-fff68466e1ee';
 const BYPASS='HQ5JV0qhkuqeoAAcOy1vaNIWgxac1dRn';
-const USERS=["Gwenn JAMBOU","Nolwenn André","Victoria Hanne","Maxence Jaubert","Jacopo Carretta","Aurélie Pureur","Noémie de Montmarin","Fanny Maynadie","Valentin Burr","Team IT","Sara Poretta","Marie Tiberghien","Imane Omri","Pauline NUGUES","Emeline Wulstecke","Justine Gager","Eléonore Guillemot","Kevin Rignault","Colm O'Brien","Clara Facchetti","Becca Guinchard","Duncan Perret","Laura POUDEVIGNE","Chakir SMIRES","Sofia Taleb Benjelloun","Dylan Pujol","Sacha Ghanem","Capucine LEVY","Mélina LE MIGNON","Emmanuelle Sillé","François Lehec","Karla Rousselet","Clément ATTOU","Evana Le Puil","Maxime BOUCHER","Lolita Soligny","Max HANCE","Julien Hirtzig","Camille Brun","Vianney Mathorel","Marie Tavenier","Florian Donet","David BERNARD","Mélanie Chauvin","Margot Pourailly","Emeric Kubiak","Aurore Lefebvre","Paul Stout","Noémie GRILLOT","Charly Arnaud","Jeanne DARBIN","Wendy BECHET","Lauren Tait","Alessandro De Valerio","Luciano Cipolla","Alexandre Collignon","FANNY POURCINE","Simon Baron","Christopher ROUSSEL","Charlie VEREAU","Tales MARRA","Marine Degruson","Elodie PINHEIRA","Julie BABEAU","ROMAIN TIRUEL","Aisha Roukhamieh-Mckinna","Svetlana Pashina","Laura Weerawardana","Christophe HOAREAU","Yohan LE CLECH","Mathieu Parisot","Arthur BEQUIN","Valentin Beaudon","Jules Jatteau","Siril Maurice","Antoine GOEHRS","Rebecca COTTIGNIES","Arthur DAVIES","Quentin CERVELLE","Emmanuelle Cortes","JB Comte"];
+// USERS — real HubSpot owners with their owner IDs
+const USERS=[
+  {name:"Alexandre Collignon",id:34343353},
+  {name:"Colm O'Brien",id:36316163},
+  {name:"ROMAIN TIRUEL",id:36316202},
+  {name:"Becca Guinchard",id:36316203},
+  {name:"Mélina LE MIGNON",id:36316204},
+  {name:"Quentin CERVELLE",id:36316287},
+  {name:"François Lehec",id:36316288},
+  {name:"Team IT",id:36644443},
+  {name:"Noémie GRILLOT",id:36650112},
+  {name:"Paul Stout",id:36915773},
+  {name:"David BERNARD",id:37041594},
+  {name:"Emmanuelle Sillé",id:37041599},
+  {name:"FANNY POURCINE",id:38211487},
+  {name:"Duncan Perret",id:40464255},
+  {name:"Arthur BEQUIN",id:53020438},
+  {name:"Emmanuelle Cortes",id:53782329},
+  {name:"Valentin Beaudon",id:75626642},
+  {name:"Kevin Rignault",id:75626648},
+  {name:"Aisha Roukhamieh-Mckinna",id:76163167},
+  {name:"Jacopo Carretta",id:76250532},
+  {name:"Pauline NUGUES",id:76580152},
+  {name:"Marine Degruson",id:78565326},
+  {name:"Antoine GOEHRS",id:78593784},
+  {name:"Marie Tiberghien",id:79019592},
+  {name:"Justine Gager",id:79390234},
+  {name:"Aurore Lefebvre",id:80948621},
+  {name:"Nolwenn André",id:81625372},
+  {name:"Emeric Kubiak",id:82026369},
+  {name:"Simon Baron",id:82026370},
+  {name:"Jeanne DARBIN",id:82438786},
+  {name:"Fanny Maynadie",id:82718476},
+  {name:"Sacha Ghanem",id:82718477},
+  {name:"Maxence Jaubert",id:82921029},
+  {name:"Sara Poretta",id:83038614},
+  {name:"Laura Weerawardana",id:83474287},
+  {name:"Mélanie Chauvin",id:83906255},
+  {name:"Evana Le Puil",id:84050896},
+  {name:"Margot Pourailly",id:84286070},
+  {name:"Svetlana Pashina",id:85109623},
+  {name:"Charly Arnaud",id:85610572},
+  {name:"Siril Maurice",id:85760726},
+  {name:"Aurélie Pureur",id:86013889},
+  {name:"Marie Tavenier",id:86545285},
+  {name:"Vianney Mathorel",id:88036747},
+  {name:"Alessandro De Valerio",id:88036749},
+  {name:"Julien Hirtzig",id:89921321},
+  {name:"Christophe HOAREAU",id:90604097},
+  {name:"Victoria Hanne",id:102901848},
+  {name:"Charlie VEREAU",id:112473414},
+  {name:"Gwenn JAMBOU",id:117331758},
+  {name:"JB Comte",id:119539483},
+  {name:"Elodie PINHEIRA",id:149054287},
+  {name:"Florian Donet",id:163990085},
+  {name:"Camille Brun",id:164452752},
+  {name:"Karla Rousselet",id:192539493},
+  {name:"Maxime BOUCHER",id:216117057},
+  {name:"Sofia Taleb Benjelloun",id:227469952},
+  {name:"Wendy BECHET",id:229891396},
+  {name:"Lolita Soligny",id:230065069},
+  {name:"Christopher ROUSSEL",id:259862553},
+  {name:"Luciano Cipolla",id:259976305},
+  {name:"Noémie de Montmarin",id:300228353},
+  {name:"Arthur DAVIES",id:333866906},
+  {name:"Dylan Pujol",id:345878022},
+  {name:"Rebecca COTTIGNIES",id:356760194},
+  {name:"Lauren Tait",id:372192068},
+  {name:"Tales MARRA",id:394994054},
+  {name:"Imane Omri",id:460737129},
+  {name:"Yohan LE CLECH",id:466116392},
+  {name:"Jules Jatteau",id:495975757},
+  {name:"Clara Facchetti",id:542455075},
+  {name:"Chakir SMIRES",id:644464934},
+  {name:"Eléonore Guillemot",id:730814087},
+  {name:"Clément ATTOU",id:1408647088},
+  {name:"Capucine LEVY",id:1494819715},
+  {name:"Laura POUDEVIGNE",id:1645262747},
+  {name:"Valentin Burr",id:1665294764},
+  {name:"Emeline Wulstecke",id:1108291986},
+  {name:"Julie BABEAU",id:618242584},
+  {name:"Max HANCE",id:621152876},
+  {name:"Mathieu Parisot",id:37527282},
+].sort((a,b)=>a.name.localeCompare(b.name));
 
 let leads=[],idc=0,importName='',importedBy='',hist=[];
 let csvRawHeaders=[],csvRawRows=[],ownerPickVal='';
@@ -490,9 +573,9 @@ document.addEventListener('click',e=>{
 // MODAL SELECT
 let mSelVal='';
 function buildMSelList(f=''){
-  const items=USERS.filter(u=>!f||u.toLowerCase().includes(f.toLowerCase()));
+  const items=USERS.filter(u=>!f||u.name.toLowerCase().includes(f.toLowerCase()));
   document.getElementById('modal-sel-list').innerHTML=items.map(u=>
-    `<div class="sel-opt${mSelVal===u?' selected':''}" onclick="pickMSel('${esc(u)}')">${esc(u)}<span class="ck">✓</span></div>`).join('');
+    `<div class="sel-opt${mSelVal===u.name?' selected':''}" onclick="pickMSel('${esc(u.name)}')">${esc(u.name)}<span class="ck">✓</span></div>`).join('');
 }
 function toggleMSel(){
   const dd=document.getElementById('modal-sel-dd'),tr=document.getElementById('modal-sel-trig');
@@ -566,11 +649,11 @@ function parseCSVLine(l){const r=[];let c='',q=false;for(const ch of l){if(ch===
 // OWNER PICKER
 function initials(n){const p=n.trim().split(/\s+/);return((p[0]?.[0]||'')+(p[1]?.[0]||'')).toUpperCase();}
 function buildOwnerList(f=''){
-  const items=USERS.filter(u=>!f||u.toLowerCase().includes(f.toLowerCase()));
+  const items=USERS.filter(u=>!f||u.name.toLowerCase().includes(f.toLowerCase()));
   document.getElementById('owner-dd-list').innerHTML=items.map(u=>`
-    <div class="owner-opt${ownerPickVal===u?' sel':''}" onclick="pickOwner('${esc(u)}')">
-      <div class="owner-opt-av">${initials(u)}</div>
-      <span class="owner-opt-name">${esc(u)}</span>
+    <div class="owner-opt${ownerPickVal===u.name?' sel':''}" onclick="pickOwner('${esc(u.name)}')">
+      <div class="owner-opt-av">${initials(u.name)}</div>
+      <span class="owner-opt-name">${esc(u.name)}</span>
       <span class="owner-opt-ck">✓</span>
     </div>`).join('');
 }
@@ -654,8 +737,8 @@ function toggleTsel(id,el){
 }
 function buildTselList(id,f,cur){
   const list=document.getElementById('tsl-'+id);if(!list)return;
-  const items=USERS.filter(u=>!f||u.toLowerCase().includes(f.toLowerCase()));
-  list.innerHTML=items.map(u=>`<div class="tsel-opt${cur===u?' sel':''}" onclick="pickTsel(${id},'${esc(u)}')">${esc(u)}${cur===u?'<span>✓</span>':''}</div>`).join('');
+  const items=USERS.filter(u=>!f||u.name.toLowerCase().includes(f.toLowerCase()));
+  list.innerHTML=items.map(u=>`<div class="tsel-opt${cur===u.name?' sel':''}" onclick="pickTsel(${id},'${esc(u.name)}')">${esc(u.name)}${cur===u.name?'<span>✓</span>':''}</div>`).join('');
 }
 function filterTsel(id,v){const l=leads.find(l=>l.id===id);buildTselList(id,v,l?l.user:'');}
 function pickTsel(id,u){const l=leads.find(l=>l.id===id);if(!l)return;l._t=true;l.user=u;closeTsel();render();footer();btn();}
@@ -716,7 +799,15 @@ function confirmSend(){
 async function runSend(snapshot,name,by,jobId){
   const results=[];
   for(const lead of snapshot){
-    const payload={importName:name,importedBy:by,linkedinUrl:lead.linkedinUrl,companyLinkedinUrl:lead.companyUrl,user:lead.user};
+    const owner=USERS.find(u=>u.name===lead.user);
+    const payload={
+      importName:name,
+      importedBy:by,
+      linkedinUrl:lead.linkedinUrl,
+      companyLinkedinUrl:lead.companyUrl,
+      ownerName:lead.user,
+      ownerId:owner?owner.id:null
+    };
     try{
       const res=await fetch('/api/send',{method:'POST',headers:{'Content-Type':'application/json','x-vercel-protection-bypass':BYPASS},body:JSON.stringify(payload)});
       results.push({...payload,status:res.ok?'sent':'error'});
