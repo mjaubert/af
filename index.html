@@ -899,18 +899,37 @@ async function runSend(snapshot,name,by,cfg,jobId){
   for(const lead of snapshot){
     const owner=USERS.find(u=>u.name===lead.user);
     const payload={
-      importName:name,importedBy:by,
-      firstName:lead.firstName,lastName:lead.lastName,
-      linkedinUrl:lead.linkedinUrl,companyLinkedinUrl:lead.companyUrl,
+      // Import metadata
+      importName:name,
+      importedBy:by,
+      // Contact data
+      firstName:lead.firstName,
+      lastName:lead.lastName,
+      linkedinUrl:lead.linkedinUrl,
+      companyLinkedinUrl:lead.companyUrl,
       jobTitle:lead.jobTitle||'',
-      ownerName:lead.user,ownerId:owner?owner.id:null,
-      config:{
-        enrichEmail:true,
-        enrichPhone:cfg.enrichPhone,
-        personaMatch:cfg.personaMatch,
-        linkToCompany:true,
-        availableOnly:cfg.availableOnly
-      }
+      // HubSpot owner
+      ownerName:lead.user,
+      ownerId:owner?owner.id:null,
+      // Import configuration — all options sent as flat booleans + human-readable summary
+      enrichEmail:true,
+      enrichPhone:cfg.enrichPhone,
+      personaMatch:cfg.personaMatch,
+      linkToCompany:true,
+      availableOnly:cfg.availableOnly,
+      // Filtering sub-rules (active when availableOnly=true)
+      filter_notClientCompany:cfg.availableOnly,
+      filter_notPartnership:cfg.availableOnly,
+      filter_noOpenDeals:cfg.availableOnly,
+      filter_notWorkedByBDR:cfg.availableOnly,
+      // Human-readable config summary
+      configSummary:[
+        'Enrich email address',
+        ...(cfg.enrichPhone?['Enrich phone number']:[]),
+        ...(cfg.personaMatch?['Persona Match (ICP check)']:[]),
+        'Link contact to company in CRM',
+        ...(cfg.availableOnly?['Available contacts only (not client / not partnership / no open deals / not worked by BDR)']:[]),
+      ].join(' | ')
     };
     try{
       const res=await fetch('/api/send',{method:'POST',headers:{'Content-Type':'application/json','x-vercel-protection-bypass':BYPASS},body:JSON.stringify(payload)});
