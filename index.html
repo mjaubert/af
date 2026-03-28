@@ -272,7 +272,7 @@ async function sendToHubspot(){
     lead.status='sending';render();
     const payload={linkedinUrl:lead.linkedinUrl,companyLinkedinUrl:lead.companyUrl,user:lead.user};
     try{
-      const res=await fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+      const res=await fetch('/api/send',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
       lead.status=res.ok?'sent':'error';
     }catch{lead.status='error';}
     results.push({...payload,status:lead.status});
