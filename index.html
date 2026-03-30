@@ -21,11 +21,44 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .o2{width:650px;height:650px;background:radial-gradient(circle,rgba(99,102,241,.12),transparent 65%);bottom:-200px;right:-200px}
 .o3{width:500px;height:500px;background:radial-gradient(circle,rgba(245,158,11,.08),transparent 65%);top:35%;left:38%}
 .app{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column}
-header{padding:16px 32px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--b);backdrop-filter:blur(20px);background:rgba(8,8,14,.8);position:sticky;top:0;z-index:50}
-.logo{display:flex;align-items:center;gap:12px}
-.logo-mark{width:36px;height:36px;background:linear-gradient(135deg,var(--a),var(--a2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 4px 16px rgba(255,122,89,.3)}
-.logo-name{font-size:15px;font-weight:700;letter-spacing:-.3px}
-.logo-name em{font-style:normal;background:linear-gradient(135deg,var(--a),var(--a3));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+/* ── LOGIN SCREEN ── */
+#view-login{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:20px}
+.login-card{width:100%;max-width:420px;background:linear-gradient(160deg,#13131f,#0f0f18);border:1px solid rgba(255,255,255,.1);border-radius:var(--rxl);padding:48px 40px;box-shadow:0 40px 80px rgba(0,0,0,.75),0 0 0 1px rgba(255,255,255,.04) inset;animation:loginIn .5s cubic-bezier(.34,1.2,.64,1)}
+@keyframes loginIn{from{transform:translateY(32px) scale(.97);opacity:0}to{transform:none;opacity:1}}
+.login-logo{display:flex;align-items:center;gap:13px;margin-bottom:36px}
+.login-logo-mark{width:44px;height:44px;background:linear-gradient(135deg,var(--a),var(--a2));border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 6px 20px rgba(255,122,89,.35)}
+.login-logo-name{font-size:17px;font-weight:800;letter-spacing:-.4px;line-height:1.2}
+.login-logo-name em{font-style:normal;background:linear-gradient(135deg,var(--a),var(--a3));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.login-logo-sub{font-size:11px;color:var(--t3);font-weight:500;margin-top:2px}
+.login-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(255,122,89,.2),transparent);margin-bottom:32px}
+.login-headline{font-size:22px;font-weight:800;letter-spacing:-.5px;margin-bottom:8px}
+.login-sub{font-size:13px;color:var(--t3);margin-bottom:28px;line-height:1.6}
+.login-field{margin-bottom:16px;position:relative}
+.login-field label{display:block;font-size:11px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px}
+.login-input{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:var(--r);padding:13px 44px 13px 16px;color:var(--t);font-size:14px;font-family:inherit;outline:none;transition:all .18s}
+.login-input::placeholder{color:var(--t3)}
+.login-input:hover{border-color:rgba(255,255,255,.16);background:rgba(255,255,255,.07)}
+.login-input:focus{border-color:var(--a);background:rgba(255,122,89,.06);box-shadow:0 0 0 3px rgba(255,122,89,.13)}
+.login-input.err{border-color:var(--err)!important;background:rgba(248,113,113,.06)!important;box-shadow:0 0 0 3px rgba(248,113,113,.1)!important;animation:shake .35s}
+@keyframes shake{0%,100%{transform:none}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.pw-toggle{position:absolute;right:14px;bottom:13px;background:none;border:none;cursor:pointer;color:var(--t3);font-size:16px;line-height:1;transition:color .15s;padding:0}
+.pw-toggle:hover{color:var(--t2)}
+.login-err{font-size:12px;color:var(--err);margin-top:10px;display:none;align-items:center;gap:6px;padding:10px 12px;background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.15);border-radius:9px}
+.login-err.show{display:flex}
+.login-btn{width:100%;margin-top:8px;padding:14px;border-radius:var(--r);background:linear-gradient(135deg,var(--a),var(--a2));color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;transition:all .18s;box-shadow:0 4px 20px rgba(255,122,89,.35);letter-spacing:-.2px}
+.login-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,122,89,.5)}
+.login-btn:active{transform:translateY(0)}
+.login-btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+.login-btn.loading{pointer-events:none}
+.login-footer{margin-top:24px;text-align:center;font-size:12px;color:var(--t3)}
+.login-footer span{display:inline-flex;align-items:center;gap:5px}
+
+/* ── MAIN APP (hidden until auth) ── */
+#view-app{display:none;flex:1;flex-direction:column}
+#view-app.authed{display:flex}
+
+/* ── BUTTONS ── */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:9px 20px;border-radius:var(--r);font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .18s;white-space:nowrap;letter-spacing:-.1px}
 .btn-primary{background:linear-gradient(135deg,var(--a),var(--a2));color:#fff;box-shadow:0 4px 16px rgba(255,122,89,.28)}
 .btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(255,122,89,.42)}
@@ -139,6 +172,16 @@ header{padding:16px 32px;display:flex;align-items:center;justify-content:space-b
 .sel-opt.selected{background:rgba(255,122,89,.15);color:var(--a);font-weight:600}
 .sel-opt .ck{opacity:0;font-size:12px}
 .sel-opt.selected .ck{opacity:1}
+header{padding:16px 32px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--b);backdrop-filter:blur(20px);background:rgba(8,8,14,.8);position:sticky;top:0;z-index:50}
+.logo{display:flex;align-items:center;gap:12px}
+.logo-mark{width:36px;height:36px;background:linear-gradient(135deg,var(--a),var(--a2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 4px 16px rgba(255,122,89,.3)}
+.logo-name{font-size:15px;font-weight:700;letter-spacing:-.3px}
+.logo-name em{font-style:normal;background:linear-gradient(135deg,var(--a),var(--a3));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.header-right{display:flex;align-items:center;gap:12px}
+.session-badge{display:flex;align-items:center;gap:8px;padding:6px 12px;background:rgba(255,255,255,.04);border:1px solid var(--b);border-radius:999px;font-size:12px;color:var(--t3)}
+.session-dot{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 6px rgba(16,185,129,.5)}
+.logout-btn{background:rgba(255,255,255,.05);border:1px solid var(--b);border-radius:9px;padding:6px 12px;color:var(--t3);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s}
+.logout-btn:hover{color:var(--err);border-color:rgba(248,113,113,.3);background:rgba(248,113,113,.06)}
 .imp-bar{display:flex;align-items:center;gap:12px;padding:14px 32px;border-bottom:1px solid var(--b);backdrop-filter:blur(20px);background:rgba(8,8,14,.8);flex-wrap:wrap}
 .back{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid var(--b2);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--t2);font-size:16px;transition:all .18s;flex-shrink:0}
 .back:hover{background:rgba(255,255,255,.12);color:var(--t);border-color:rgba(255,122,89,.3)}
@@ -299,13 +342,49 @@ td.ac{width:38px;text-align:center}
   <div class="orb o2" id="o2"></div>
   <div class="orb o3" id="o3"></div>
 </div>
-<div class="app">
+
+<!-- ── LOGIN SCREEN ── -->
+<div id="view-login">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-logo-mark">🗂</div>
+      <div>
+        <div class="login-logo-name">Smart Import <em>→ HubSpot</em></div>
+        <div class="login-logo-sub">AssessFirst · Internal tool</div>
+      </div>
+    </div>
+    <div class="login-divider"></div>
+    <div class="login-headline">Welcome back 👋</div>
+    <div class="login-sub">Enter your password to access the import platform.</div>
+    <div class="login-field">
+      <label>Password</label>
+      <div style="position:relative">
+        <input class="login-input" type="password" id="login-pw" placeholder="••••••••••••••" onkeydown="if(event.key==='Enter')doLogin()" oninput="this.classList.remove('err');document.getElementById('login-err').classList.remove('show')">
+        <button class="pw-toggle" onclick="togglePw()" id="pw-eye" tabindex="-1">👁</button>
+      </div>
+    </div>
+    <div class="login-err" id="login-err">
+      <span>🔒</span><span>Incorrect password. Please try again.</span>
+    </div>
+    <button class="login-btn" id="login-btn" onclick="doLogin()">Sign in →</button>
+    <div class="login-footer">
+      <span>🔐 Secure access · AssessFirst 2026</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── MAIN APP ── -->
+<div class="app" id="view-app">
   <header>
     <div class="logo">
       <div class="logo-mark">🗂</div>
       <div class="logo-name">Smart Import <em>→ HubSpot</em></div>
     </div>
-    <button class="btn btn-primary" onclick="openNewModal()">＋ New Import</button>
+    <div class="header-right">
+      <div class="session-badge"><div class="session-dot"></div>Session active</div>
+      <button class="logout-btn" onclick="doLogout()">Sign out</button>
+      <button class="btn btn-primary" onclick="openNewModal()">＋ New Import</button>
+    </div>
   </header>
 
   <!-- HOME -->
@@ -465,40 +544,17 @@ td.ac{width:38px;text-align:center}
     <h3>Map your columns</h3>
     <p class="modal-desc">Detected <strong id="map-col-count">0</strong> columns · <strong id="map-row-count">0</strong> rows. Match each CSV column to its destination.</p>
     <div class="map-grid">
-      <div class="map-row">
-        <select class="map-csv-sel" id="map-firstname"></select>
-        <div class="map-arrow">→</div>
-        <div class="map-target">First Name<span class="star">*</span></div>
-      </div>
-      <div class="map-row">
-        <select class="map-csv-sel" id="map-lastname"></select>
-        <div class="map-arrow">→</div>
-        <div class="map-target">Last Name<span class="star">*</span></div>
-      </div>
-      <div class="map-row">
-        <select class="map-csv-sel" id="map-linkedin"></select>
-        <div class="map-arrow">→</div>
-        <div class="map-target">LinkedIn Profile URL<span class="star">*</span></div>
-      </div>
-      <div class="map-row">
-        <select class="map-csv-sel" id="map-company"></select>
-        <div class="map-arrow">→</div>
-        <div class="map-target">LinkedIn Company URL<span class="star">*</span></div>
-      </div>
-      <div class="map-row">
-        <select class="map-csv-sel" id="map-jobtitle"></select>
-        <div class="map-arrow">→</div>
-        <div class="map-target optional">Job Title<span class="opt-tag">(optional)</span></div>
-      </div>
+      <div class="map-row"><select class="map-csv-sel" id="map-firstname"></select><div class="map-arrow">→</div><div class="map-target">First Name<span class="star">*</span></div></div>
+      <div class="map-row"><select class="map-csv-sel" id="map-lastname"></select><div class="map-arrow">→</div><div class="map-target">Last Name<span class="star">*</span></div></div>
+      <div class="map-row"><select class="map-csv-sel" id="map-linkedin"></select><div class="map-arrow">→</div><div class="map-target">LinkedIn Profile URL<span class="star">*</span></div></div>
+      <div class="map-row"><select class="map-csv-sel" id="map-company"></select><div class="map-arrow">→</div><div class="map-target">LinkedIn Company URL<span class="star">*</span></div></div>
+      <div class="map-row"><select class="map-csv-sel" id="map-jobtitle"></select><div class="map-arrow">→</div><div class="map-target optional">Job Title<span class="opt-tag">(optional)</span></div></div>
     </div>
     <div class="map-divider"></div>
     <div class="owner-block">
       <div class="owner-block-header">
         <div class="owner-block-icon">👤</div>
-        <div>
-          <div class="owner-block-title">Assign all leads to one owner</div>
-          <div class="owner-block-sub">Applied globally to every imported lead</div>
-        </div>
+        <div><div class="owner-block-title">Assign all leads to one owner</div><div class="owner-block-sub">Applied globally to every imported lead</div></div>
       </div>
       <div class="owner-pick-wrap" id="owner-pick-wrap">
         <div class="owner-pick-trigger" id="owner-pick-trig" tabindex="0" onclick="toggleOwnerPick()" onkeydown="if(event.key==='Enter'||event.key===' ')toggleOwnerPick()">
@@ -534,42 +590,27 @@ td.ac{width:38px;text-align:center}
       <div class="cfg-title">Qualification</div>
       <div class="cfg-desc">Should we verify whether each contact fits your Ideal Customer Profile before importing?</div>
       <div class="tog-row on" id="tog-persona" onclick="toggleCfg('personaMatch','tog-persona')">
-        <div class="tog-body">
-          <div class="tog-label">Persona Match <span style="font-size:12px;color:var(--t3);font-weight:400">(checks whether the contact fits our ICP)</span></div>
-          <div class="tog-sub">Each contact will be evaluated against your ICP criteria before being added to your CRM.</div>
-        </div>
+        <div class="tog-body"><div class="tog-label">Persona Match <span style="font-size:12px;color:var(--t3);font-weight:400">(checks whether the contact fits our ICP)</span></div><div class="tog-sub">Each contact will be evaluated against your ICP criteria before being added to your CRM.</div></div>
         <div class="tog-switch"><div class="tog-knob"></div></div>
       </div>
-      <div class="modal-actions">
-        <button class="btn btn-ghost" onclick="closeCfg()">Cancel</button>
-        <button class="btn btn-primary" onclick="goStep(2)">Next →</button>
-      </div>
+      <div class="modal-actions"><button class="btn btn-ghost" onclick="closeCfg()">Cancel</button><button class="btn btn-primary" onclick="goStep(2)">Next →</button></div>
     </div>
     <div class="cfg-panel" id="cfg-panel-2">
       <div class="cfg-eyebrow">Step 2 of 4</div>
       <div class="cfg-title">Enrichment</div>
       <div class="cfg-desc">Select which additional data you want to enrich for each contact.</div>
       <div class="tog-row" id="tog-phone" onclick="toggleCfg('enrichPhone','tog-phone')">
-        <div class="tog-body">
-          <div class="tog-label">Enrich phone number</div>
-          <div class="tog-sub">Attempt to find and attach a phone number for each contact.</div>
-        </div>
+        <div class="tog-body"><div class="tog-label">Enrich phone number</div><div class="tog-sub">Attempt to find and attach a phone number for each contact.</div></div>
         <div class="tog-switch"><div class="tog-knob"></div></div>
       </div>
-      <div class="modal-actions">
-        <button class="btn btn-ghost" onclick="goStep(1,'back')">← Back</button>
-        <button class="btn btn-primary" onclick="goStep(3)">Next →</button>
-      </div>
+      <div class="modal-actions"><button class="btn btn-ghost" onclick="goStep(1,'back')">← Back</button><button class="btn btn-primary" onclick="goStep(3)">Next →</button></div>
     </div>
     <div class="cfg-panel" id="cfg-panel-3">
       <div class="cfg-eyebrow">Step 3 of 4</div>
       <div class="cfg-title">Availability</div>
       <div class="cfg-desc">Only import contacts that are currently open and available for prospection.</div>
       <div class="tog-row on" id="tog-avail" onclick="toggleCfgAvail()">
-        <div class="tog-body">
-          <div class="tog-label">Import only available contacts for prospection</div>
-          <div class="tog-sub">Contacts that don't match the filters below will be excluded from this import.</div>
-        </div>
+        <div class="tog-body"><div class="tog-label">Import only available contacts for prospection</div><div class="tog-sub">Contacts that don't match the filters below will be excluded from this import.</div></div>
         <div class="tog-switch"><div class="tog-knob"></div></div>
       </div>
       <div class="filter-rules" id="filter-rules">
@@ -578,10 +619,7 @@ td.ac{width:38px;text-align:center}
         <div class="filter-rule">Not associated to companies with open deals</div>
         <div class="filter-rule">Not already worked by another BDR</div>
       </div>
-      <div class="modal-actions">
-        <button class="btn btn-ghost" onclick="goStep(2,'back')">← Back</button>
-        <button class="btn btn-primary" onclick="goStep(4)">Next →</button>
-      </div>
+      <div class="modal-actions"><button class="btn btn-ghost" onclick="goStep(2,'back')">← Back</button><button class="btn btn-primary" onclick="goStep(4)">Next →</button></div>
     </div>
     <div class="cfg-panel" id="cfg-panel-4">
       <div class="cfg-eyebrow">Step 4 of 4</div>
@@ -602,10 +640,7 @@ td.ac{width:38px;text-align:center}
       </div>
       <div class="info-block"><span style="font-size:15px;flex-shrink:0">🔗</span><p><strong>Contacts will automatically be linked to their company in the CRM.</strong></p></div>
       <div class="info-block" style="margin-top:8px"><span style="font-size:15px;flex-shrink:0">🔒</span><p><strong>No duplicates will be created.</strong> If a contact already exists in the CRM, it will be updated instead of being recreated.</p></div>
-      <div class="modal-actions">
-        <button class="btn btn-ghost" onclick="goStep(3,'back')">← Back</button>
-        <button class="btn btn-primary" onclick="confirmCfg()">Confirm import →</button>
-      </div>
+      <div class="modal-actions"><button class="btn btn-ghost" onclick="goStep(3,'back')">← Back</button><button class="btn btn-primary" onclick="confirmCfg()">Confirm import →</button></div>
     </div>
   </div>
 </div>
@@ -613,7 +648,66 @@ td.ac{width:38px;text-align:center}
 <div class="tw" id="tw"></div>
 
 <script>
+const PASSWORD='AssessFirst!2026@';
 const BYPASS='HQ5JV0qhkuqeoAAcOy1vaNIWgxac1dRn';
+const SESSION_KEY='af_import_session';
+
+// ── AUTH ───────────────────────────────────────────────
+function checkSession(){
+  try{const s=sessionStorage.getItem(SESSION_KEY);if(s==='1')return true;}catch{}
+  return false;
+}
+function doLogin(){
+  const pw=document.getElementById('login-pw').value;
+  const btn=document.getElementById('login-btn');
+  if(!pw)return;
+  btn.disabled=true;btn.textContent='Signing in…';
+  // Simulate a tiny delay for polish
+  setTimeout(()=>{
+    if(pw===PASSWORD){
+      try{sessionStorage.setItem(SESSION_KEY,'1');}catch{}
+      // Animate out login card
+      const card=document.querySelector('.login-card');
+      card.style.transition='all .35s cubic-bezier(.4,0,.2,1)';
+      card.style.transform='scale(.95) translateY(-16px)';
+      card.style.opacity='0';
+      setTimeout(()=>{
+        document.getElementById('view-login').style.display='none';
+        document.getElementById('view-app').classList.add('authed');
+        renderHome();
+      },320);
+    }else{
+      btn.disabled=false;btn.textContent='Sign in →';
+      const input=document.getElementById('login-pw');
+      input.classList.add('err');
+      input.value='';
+      document.getElementById('login-err').classList.add('show');
+      setTimeout(()=>input.focus(),50);
+    }
+  },420);
+}
+function doLogout(){
+  try{sessionStorage.removeItem(SESSION_KEY);}catch{}
+  document.getElementById('view-app').classList.remove('authed');
+  document.getElementById('view-login').style.display='flex';
+  const card=document.querySelector('.login-card');
+  card.style.transition='none';card.style.transform='';card.style.opacity='';
+  document.getElementById('login-pw').value='';
+  document.getElementById('login-err').classList.remove('show');
+  toast('Signed out successfully','info');
+}
+function togglePw(){
+  const i=document.getElementById('login-pw'),e=document.getElementById('pw-eye');
+  if(i.type==='password'){i.type='text';e.textContent='🙈';}
+  else{i.type='password';e.textContent='👁';}
+}
+// Auto-login if session exists
+if(checkSession()){
+  document.getElementById('view-login').style.display='none';
+  document.getElementById('view-app').classList.add('authed');
+}
+setTimeout(()=>document.getElementById('login-pw').focus(),200);
+
 const USERS=[
   {name:"Aisha Roukhamieh-Mckinna",id:76163167},{name:"Alessandro De Valerio",id:88036749},
   {name:"Alexandre Collignon",id:34343353},{name:"Antoine GOEHRS",id:78593784},
@@ -681,25 +775,21 @@ function renderCal(){
   for(let d=1;d<=days;d++){
     const ds=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
     const sel=ds===calSelected;
-    html+=`<div onclick="pickCalDay('${ds}')" style="text-align:center;padding:5px 2px;border-radius:7px;cursor:pointer;font-size:12px;font-weight:${sel?700:400};color:${sel?'var(--a)':'var(--t2)'};background:${sel?'rgba(255,122,89,.15)':'transparent'};transition:all .1s" onmouseover="this.style.background=this.style.background||'rgba(255,255,255,.06)'" onmouseout="this.style.background='${sel?'rgba(255,122,89,.15)':'transparent'}'}">${d}</div>`;
+    html+=`<div onclick="pickCalDay('${ds}')" style="text-align:center;padding:5px 2px;border-radius:7px;cursor:pointer;font-size:12px;font-weight:${sel?700:400};color:${sel?'var(--a)':'var(--t2)'};background:${sel?'rgba(255,122,89,.15)':'transparent'};transition:all .1s">${d}</div>`;
   }
   document.getElementById('cal-grid').innerHTML=html;
 }
 function pickCalDay(ds){
-  calSelected=ds;
-  const [y,m,d]=ds.split('-');
+  calSelected=ds;const [y,m,d]=ds.split('-');
   document.getElementById('cal-label').textContent=`${d}/${m}/${y}`;
   document.getElementById('cal-clear').style.display='inline';
   document.getElementById('cal-trigger').style.borderColor='rgba(255,122,89,.4)';
-  calOpen=false;document.getElementById('cal-dd').style.display='none';
-  filterHist();
+  calOpen=false;document.getElementById('cal-dd').style.display='none';filterHist();
 }
 function clearCalDate(){
-  calSelected='';
-  document.getElementById('cal-label').textContent='Filter by date…';
+  calSelected='';document.getElementById('cal-label').textContent='Filter by date…';
   document.getElementById('cal-clear').style.display='none';
-  document.getElementById('cal-trigger').style.borderColor='';
-  filterHist();
+  document.getElementById('cal-trigger').style.borderColor='';filterHist();
 }
 document.addEventListener('click',e=>{
   if(calOpen&&!document.getElementById('cal-wrap')?.contains(e.target)){calOpen=false;document.getElementById('cal-dd').style.display='none';}
@@ -708,8 +798,6 @@ document.addEventListener('click',e=>{
   if(!document.getElementById('owner-pick-wrap')?.contains(e.target)){document.getElementById('owner-dd').style.display='none';document.getElementById('owner-pick-trig')?.classList.remove('open');}
   if(!e.target.closest('.tsel-wrap'))closeTsel();
 });
-
-// PARALLAX
 document.addEventListener('mousemove',e=>{
   const x=(e.clientX/innerWidth-.5)*44,y=(e.clientY/innerHeight-.5)*44;
   document.getElementById('o1').style.transform=`translate(${x*.9}px,${y*.9}px)`;
@@ -717,7 +805,7 @@ document.addEventListener('mousemove',e=>{
   document.getElementById('o3').style.transform=`translate(${x*.4}px,${y*.4}px)`;
 });
 
-// ── MODAL SELECT — Created by ──────────────────────────
+// ── MODAL SELECT ───────────────────────────────────────
 let mSelVal='';
 function buildMSelList(f=''){
   const items=USERS.filter(u=>!f||u.name.toLowerCase().includes(f.toLowerCase()));
@@ -732,23 +820,20 @@ function toggleMSel(){
 }
 function filterMSel(v){buildMSelList(v);}
 function pickMSel(u){
-  mSelVal=u;
-  const el=document.getElementById('modal-sel-val');el.textContent=u;el.classList.remove('sel-ph');
+  mSelVal=u;const el=document.getElementById('modal-sel-val');el.textContent=u;el.classList.remove('sel-ph');
   document.getElementById('modal-sel-trig').classList.remove('err','open');
   document.getElementById('modal-sel-dd').style.display='none';buildMSelList();
 }
 
-// ── NEW IMPORT MODAL ──────────────────────────────────
+// ── NEW IMPORT MODAL ───────────────────────────────────
 function openNewModal(){
-  mSelVal='';
-  document.getElementById('m-name').value='';
+  mSelVal='';document.getElementById('m-name').value='';
   document.getElementById('m-name').classList.remove('err');
   document.getElementById('modal-sel-trig').classList.remove('err','open');
   const vEl=document.getElementById('modal-sel-val');vEl.textContent='— Select your name —';vEl.classList.add('sel-ph');
   document.getElementById('modal-sel-dd').style.display='none';
   const errEl=document.getElementById('m-name-err');if(errEl)errEl.remove();
-  buildMSelList();
-  document.getElementById('modal-new').classList.add('open');
+  buildMSelList();document.getElementById('modal-new').classList.add('open');
   setTimeout(()=>document.getElementById('m-name').focus(),120);
 }
 function closeNew(){document.getElementById('modal-new').classList.remove('open');}
@@ -762,44 +847,29 @@ function confirmNew(){
     document.getElementById('m-name').classList.add('err');
     let errEl=document.getElementById('m-name-err');
     if(!errEl){errEl=document.createElement('div');errEl.id='m-name-err';errEl.style.cssText='font-size:12px;color:var(--err);margin-top:6px';document.getElementById('m-name').after(errEl);}
-    errEl.textContent='An import with this name already exists. Please choose a different name.';
-    return;
+    errEl.textContent='An import with this name already exists. Please choose a different name.';return;
   }
   const errEl2=document.getElementById('m-name-err');if(errEl2)errEl2.remove();
-  closeNew();
-  importName=n;importedBy=mSelVal;leads=[];idc=0;
-  resetCsvZone();
+  closeNew();importName=n;importedBy=mSelVal;leads=[];idc=0;resetCsvZone();
   document.getElementById('imp-title').textContent=n;
   document.getElementById('imp-by').textContent='By '+importedBy;
   document.getElementById('view-home').classList.remove('active');
-  document.getElementById('view-import').classList.add('active');
-  render();
+  document.getElementById('view-import').classList.add('active');render();
 }
 
 // ── CSV ────────────────────────────────────────────────
-function resetCsvZone(){
-  document.getElementById('csv-input').value='';
-  document.getElementById('csv-fname').textContent='Import CSV';
-  document.getElementById('csv-drop').classList.remove('has-file');
-}
-function onCsvPick(e){
-  const file=e.target.files[0];if(!file)return;
-  document.getElementById('csv-fname').textContent=file.name;
-  document.getElementById('csv-drop').classList.add('has-file');
-  parseCSVFile(file);
-}
+function resetCsvZone(){document.getElementById('csv-input').value='';document.getElementById('csv-fname').textContent='Import CSV';document.getElementById('csv-drop').classList.remove('has-file');}
+function onCsvPick(e){const file=e.target.files[0];if(!file)return;document.getElementById('csv-fname').textContent=file.name;document.getElementById('csv-drop').classList.add('has-file');parseCSVFile(file);}
 function parseCSVFile(file){
   const r=new FileReader();
   r.onload=ev=>{
     const lines=ev.target.result.split(/\r?\n/).filter(l=>l.trim());
     if(lines.length<2){toast('Empty or invalid CSV.','error');resetCsvZone();return;}
-    csvRawHeaders=parseCSVLine(lines[0]).map(h=>h.trim());
-    csvRawRows=[];
+    csvRawHeaders=parseCSVLine(lines[0]).map(h=>h.trim());csvRawRows=[];
     for(let i=1;i<lines.length;i++){const c=parseCSVLine(lines[i]);if(c.some(x=>x.trim()))csvRawRows.push(c);}
     if(!csvRawRows.length){toast('No data rows found.','error');resetCsvZone();return;}
     openMapModal();
-  };
-  r.readAsText(file);
+  };r.readAsText(file);
 }
 function parseCSVLine(l){const r=[];let c='',q=false;for(const ch of l){if(ch==='"'){q=!q;}else if(ch===','&&!q){r.push(c);c='';}else c+=ch;}r.push(c);return r;}
 
@@ -810,25 +880,21 @@ function buildOwnerList(f=''){
   document.getElementById('owner-dd-list').innerHTML=items.map(u=>`
     <div class="owner-opt${ownerPickVal===u.name?' sel':''}" onclick="pickOwner('${esc(u.name)}')">
       <div class="owner-opt-av">${initials(u.name)}</div>
-      <span class="owner-opt-name">${esc(u.name)}</span>
-      <span class="owner-opt-ck">✓</span>
+      <span class="owner-opt-name">${esc(u.name)}</span><span class="owner-opt-ck">✓</span>
     </div>`).join('');
 }
 function toggleOwnerPick(){
   const dd=document.getElementById('owner-dd'),tr=document.getElementById('owner-pick-trig');
-  const open=dd.style.display!=='none';
-  dd.style.display=open?'none':'block';tr.classList.toggle('open',!open);
+  const open=dd.style.display!=='none';dd.style.display=open?'none':'block';tr.classList.toggle('open',!open);
   if(!open){document.getElementById('owner-srch').value='';buildOwnerList();setTimeout(()=>document.getElementById('owner-srch').focus(),50);}
 }
 function filterOwnerPick(v){buildOwnerList(v);}
 function pickOwner(u){
-  ownerPickVal=u;
-  const av=document.getElementById('owner-av');av.textContent=initials(u);av.classList.remove('empty');
+  ownerPickVal=u;const av=document.getElementById('owner-av');av.textContent=initials(u);av.classList.remove('empty');
   const val=document.getElementById('owner-pick-val');val.textContent=u;val.classList.remove('owner-pick-ph');
   document.getElementById('owner-pick-trig').classList.remove('open');
   document.getElementById('owner-dd').style.display='none';
-  document.getElementById('owner-err').classList.remove('show');
-  buildOwnerList();
+  document.getElementById('owner-err').classList.remove('show');buildOwnerList();
 }
 
 // ── CSV MAPPING ────────────────────────────────────────
@@ -841,82 +907,49 @@ const MAP_ALIASES={
 };
 function autoMap(h){
   const n=s=>s.toLowerCase().replace(/[^a-z_]/g,'').replace(/\s+/g,'_');
-  return{
-    firstName:h.findIndex(x=>MAP_ALIASES.firstName.includes(n(x))),
-    lastName:h.findIndex(x=>MAP_ALIASES.lastName.includes(n(x))),
-    linkedinUrl:h.findIndex(x=>MAP_ALIASES.linkedinUrl.includes(n(x))),
-    companyUrl:h.findIndex(x=>MAP_ALIASES.companyUrl.includes(n(x))),
-    jobTitle:h.findIndex(x=>MAP_ALIASES.jobTitle.includes(n(x)))
-  };
+  return{firstName:h.findIndex(x=>MAP_ALIASES.firstName.includes(n(x))),lastName:h.findIndex(x=>MAP_ALIASES.lastName.includes(n(x))),linkedinUrl:h.findIndex(x=>MAP_ALIASES.linkedinUrl.includes(n(x))),companyUrl:h.findIndex(x=>MAP_ALIASES.companyUrl.includes(n(x))),jobTitle:h.findIndex(x=>MAP_ALIASES.jobTitle.includes(n(x)))};
 }
 function openMapModal(){
   const h=csvRawHeaders,m=autoMap(h);
-  document.getElementById('map-col-count').textContent=h.length;
-  document.getElementById('map-row-count').textContent=csvRawRows.length;
-  document.getElementById('map-count').textContent=csvRawRows.length;
+  document.getElementById('map-col-count').textContent=h.length;document.getElementById('map-row-count').textContent=csvRawRows.length;document.getElementById('map-count').textContent=csvRawRows.length;
   const reqOpts='<option value="-1">— Not mapped —</option>'+h.map((x,i)=>`<option value="${i}">${esc(x)}</option>`).join('');
   const optOpts='<option value="-1">— Not mapped (optional) —</option>'+h.map((x,i)=>`<option value="${i}">${esc(x)}</option>`).join('');
   ['map-firstname','map-lastname','map-linkedin','map-company'].forEach(id=>{const s=document.getElementById(id);s.innerHTML=reqOpts;s.classList.remove('auto');});
   document.getElementById('map-jobtitle').innerHTML=optOpts;document.getElementById('map-jobtitle').classList.remove('auto');
   const setMap=(id,idx)=>{if(idx>=0){const s=document.getElementById(id);s.value=idx;s.classList.add('auto');}};
-  setMap('map-firstname',m.firstName);setMap('map-lastname',m.lastName);
-  setMap('map-linkedin',m.linkedinUrl);setMap('map-company',m.companyUrl);
-  setMap('map-jobtitle',m.jobTitle);
-  ownerPickVal='';
-  document.getElementById('owner-av').textContent='👤';document.getElementById('owner-av').classList.add('empty');
+  setMap('map-firstname',m.firstName);setMap('map-lastname',m.lastName);setMap('map-linkedin',m.linkedinUrl);setMap('map-company',m.companyUrl);setMap('map-jobtitle',m.jobTitle);
+  ownerPickVal='';document.getElementById('owner-av').textContent='👤';document.getElementById('owner-av').classList.add('empty');
   const vEl=document.getElementById('owner-pick-val');vEl.textContent='Select a HubSpot owner…';vEl.classList.add('owner-pick-ph');
-  document.getElementById('owner-pick-trig').classList.remove('open');
-  document.getElementById('owner-dd').style.display='none';
-  document.getElementById('owner-err').classList.remove('show');
-  buildOwnerList();
-  document.getElementById('modal-map').classList.add('open');
+  document.getElementById('owner-pick-trig').classList.remove('open');document.getElementById('owner-dd').style.display='none';
+  document.getElementById('owner-err').classList.remove('show');buildOwnerList();document.getElementById('modal-map').classList.add('open');
 }
 function closeMap(){document.getElementById('modal-map').classList.remove('open');resetCsvZone();}
 function confirmMap(){
-  const fn=parseInt(document.getElementById('map-firstname').value);
-  const ln=parseInt(document.getElementById('map-lastname').value);
-  const li=parseInt(document.getElementById('map-linkedin').value);
-  const co=parseInt(document.getElementById('map-company').value);
+  const fn=parseInt(document.getElementById('map-firstname').value),ln=parseInt(document.getElementById('map-lastname').value);
+  const li=parseInt(document.getElementById('map-linkedin').value),co=parseInt(document.getElementById('map-company').value);
   const jt=parseInt(document.getElementById('map-jobtitle').value);
   if(fn<0||ln<0||li<0||co<0){toast('Please map First Name, Last Name and both LinkedIn columns.','error');return;}
   if(!ownerPickVal){document.getElementById('owner-err').classList.add('show');return;}
   let n=0;
   csvRawRows.forEach(cols=>{
-    const first=(cols[fn]||'').trim(),last=(cols[ln]||'').trim();
-    const linkedin=(cols[li]||'').trim(),company=(cols[co]||'').trim();
-    const job=jt>=0?(cols[jt]||'').trim():'';
+    const first=(cols[fn]||'').trim(),last=(cols[ln]||'').trim(),linkedin=(cols[li]||'').trim(),company=(cols[co]||'').trim(),job=jt>=0?(cols[jt]||'').trim():'';
     if(first||last||linkedin||company){leads.push({id:++idc,status:'idle',firstName:first,lastName:last,linkedinUrl:linkedin,companyUrl:company,jobTitle:job,user:ownerPickVal});n++;}
   });
-  document.getElementById('modal-map').classList.remove('open');resetCsvZone();
-  render();toast(n+' lead'+(n!==1?'s':'')+' imported','success');
+  document.getElementById('modal-map').classList.remove('open');resetCsvZone();render();toast(n+' lead'+(n!==1?'s':'')+' imported','success');
 }
 
-// ── MULTI-STEP CONFIG MODAL ────────────────────────────
-function openCfgModal(){
-  cfgStep=1;
-  syncToggles();
-  renderCfgStep(1);
-  document.getElementById('modal-cfg').classList.add('open');
-}
+// ── CONFIG MODAL ───────────────────────────────────────
+function openCfgModal(){cfgStep=1;syncToggles();renderCfgStep(1);document.getElementById('modal-cfg').classList.add('open');}
 function closeCfg(){document.getElementById('modal-cfg').classList.remove('open');}
-function syncToggles(){
-  setToggle('tog-persona',cfg.personaMatch);
-  setToggle('tog-phone',cfg.enrichPhone);
-  setToggle('tog-avail',cfg.availableOnly);
-  updateFilterRulesVis();
-}
+function syncToggles(){setToggle('tog-persona',cfg.personaMatch);setToggle('tog-phone',cfg.enrichPhone);setToggle('tog-avail',cfg.availableOnly);updateFilterRulesVis();}
 function setToggle(id,on){const row=document.getElementById(id);if(on)row.classList.add('on');else row.classList.remove('on');}
 function toggleCfg(key,rowId){cfg[key]=!cfg[key];setToggle(rowId,cfg[key]);}
 function toggleCfgAvail(){cfg.availableOnly=!cfg.availableOnly;setToggle('tog-avail',cfg.availableOnly);updateFilterRulesVis();}
 function updateFilterRulesVis(){const fr=document.getElementById('filter-rules');if(fr)fr.style.opacity=cfg.availableOnly?'1':'0.3';}
 function goStep(n,dir){
   document.querySelectorAll('.cfg-panel').forEach(p=>p.classList.remove('active','back'));
-  const next=document.getElementById('cfg-panel-'+n);
-  if(dir==='back')next.classList.add('back');
-  next.classList.add('active');
-  cfgStep=n;
-  updateStepDots(n);
-  if(n===4)buildReview();
+  const next=document.getElementById('cfg-panel-'+n);if(dir==='back')next.classList.add('back');
+  next.classList.add('active');cfgStep=n;updateStepDots(n);if(n===4)buildReview();
 }
 function updateStepDots(current){
   for(let i=1;i<=4;i++){
@@ -927,87 +960,41 @@ function updateStepDots(current){
     else{num.textContent=i;}
   }
 }
-function renderCfgStep(n){
-  document.querySelectorAll('.cfg-panel').forEach(p=>p.classList.remove('active','back'));
-  document.getElementById('cfg-panel-'+n).classList.add('active');
-  updateStepDots(n);
-}
+function renderCfgStep(n){document.querySelectorAll('.cfg-panel').forEach(p=>p.classList.remove('active','back'));document.getElementById('cfg-panel-'+n).classList.add('active');updateStepDots(n);}
 function buildReview(){
-  const yn=(v,on='Enabled',off='Disabled')=>v
-    ?`<span class="review-val on">✓ ${on}</span>`
-    :`<span class="review-val off">— ${off}</span>`;
+  const yn=(v,on='Enabled',off='Disabled')=>v?`<span class="review-val on">✓ ${on}</span>`:`<span class="review-val off">— ${off}</span>`;
   document.getElementById('rv-persona').outerHTML=`<span class="review-val" id="rv-persona">${yn(cfg.personaMatch)}</span>`;
   document.getElementById('rv-phone').outerHTML=`<span class="review-val" id="rv-phone">${yn(cfg.enrichPhone)}</span>`;
   document.getElementById('rv-avail').outerHTML=`<span class="review-val" id="rv-avail">${yn(cfg.availableOnly,'Active','Inactive')}</span>`;
   document.getElementById('rv-filters-block').style.display=cfg.availableOnly?'block':'none';
 }
-function confirmCfg(){
-  closeCfg();
-  runImport();
-}
+function confirmCfg(){closeCfg();runImport();}
 
-// ── GENERATE UNIQUE IMPORT CODE ────────────────────────
-function genImportCode(){
-  return 'IMP-'+Date.now().toString(36).toUpperCase()+'-'+Math.random().toString(36).slice(2,7).toUpperCase();
-}
+// ── IMPORT CODE ────────────────────────────────────────
+function genImportCode(){return'IMP-'+Date.now().toString(36).toUpperCase()+'-'+Math.random().toString(36).slice(2,7).toUpperCase();}
 
 // ── SEND ───────────────────────────────────────────────
 function runImport(){
   const snapshot=[...leads],name=importName,by=importedBy,c={...cfg};
-  // ✅ Generate the code once here, attach to c so it's shared by all leads
   c.code=genImportCode();
   const jobId=Date.now()+'_'+Math.random().toString(36).slice(2,7);
   document.getElementById('view-import').classList.remove('active');
   document.getElementById('view-home').classList.add('active');
-  leads=[];idc=0;
-  activeJobs.push({id:jobId,name,by});
-  renderHome();
-  runSend(snapshot,name,by,c,jobId);
+  leads=[];idc=0;activeJobs.push({id:jobId,name,by});renderHome();runSend(snapshot,name,by,c,jobId);
 }
 async function runSend(snapshot,name,by,c,jobId){
   const results=[];
   for(const lead of snapshot){
     const owner=USERS.find(u=>u.name===lead.user);
-    const payload={
-      importName:name,
-      importedBy:by,
-      importCode:c.code,   // ✅ now always defined and identical for every lead of this import
-      firstName:lead.firstName,
-      lastName:lead.lastName,
-      linkedinUrl:lead.linkedinUrl,
-      companyLinkedinUrl:lead.companyUrl,
-      jobTitle:lead.jobTitle||'',
-      ownerName:lead.user,
-      ownerId:owner?owner.id:null,
-      enrichEmail:true,
-      enrichPhone:c.enrichPhone,
-      personaMatch:c.personaMatch,
-      linkToCompany:true,
-      availableOnly:c.availableOnly,
-      filter_notClientCompany:c.availableOnly,
-      filter_notPartnership:c.availableOnly,
-      filter_noOpenDeals:c.availableOnly,
-      filter_notWorkedByBDR:c.availableOnly,
-      configSummary:[
-        'Enrich email address',
-        ...(c.enrichPhone?['Enrich phone number']:[]),
-        ...(c.personaMatch?['Persona Match (ICP check)']:[]),
-        'Link contact to company in CRM',
-        ...(c.availableOnly?['Available contacts only']:[]),
-      ].join(' | ')
-    };
-    try{
-      const res=await fetch('/api/send',{method:'POST',headers:{'Content-Type':'application/json','x-vercel-protection-bypass':BYPASS},body:JSON.stringify(payload)});
-      results.push({...payload,status:res.ok?'sent':'error'});
-    }catch{results.push({...payload,status:'error'});}
+    const payload={importName:name,importedBy:by,importCode:c.code,firstName:lead.firstName,lastName:lead.lastName,linkedinUrl:lead.linkedinUrl,companyLinkedinUrl:lead.companyUrl,jobTitle:lead.jobTitle||'',ownerName:lead.user,ownerId:owner?owner.id:null,enrichEmail:true,enrichPhone:c.enrichPhone,personaMatch:c.personaMatch,linkToCompany:true,availableOnly:c.availableOnly,filter_notClientCompany:c.availableOnly,filter_notPartnership:c.availableOnly,filter_noOpenDeals:c.availableOnly,filter_notWorkedByBDR:c.availableOnly,configSummary:['Enrich email address',...(c.enrichPhone?['Enrich phone number']:[]),...(c.personaMatch?['Persona Match (ICP check)']:[]),'Link contact to company in CRM',...(c.availableOnly?['Available contacts only']:[])].join(' | ')};
+    try{const res=await fetch('/api/send',{method:'POST',headers:{'Content-Type':'application/json','x-vercel-protection-bypass':BYPASS},body:JSON.stringify(payload)});results.push({...payload,status:res.ok?'sent':'error'});}
+    catch{results.push({...payload,status:'error'});}
     await new Promise(r=>setTimeout(r,150));
   }
-  const ok=results.filter(r=>r.status==='sent').length;
-  const err=results.filter(r=>r.status==='error').length;
+  const ok=results.filter(r=>r.status==='sent').length,err=results.filter(r=>r.status==='error').length;
   hist.unshift({id:Date.now(),name,importedBy:by,date:new Date().toLocaleString('en-GB'),total:results.length,ok,err,leads:results});
   try{localStorage.setItem('hs_v11',JSON.stringify(hist));}catch{}
-  activeJobs=activeJobs.filter(j=>j.id!==jobId);
-  renderHome();
+  activeJobs=activeJobs.filter(j=>j.id!==jobId);renderHome();
   toast(err===0?`✅ "${name}" — ${ok} lead${ok!==1?'s':''} sent!`:`"${name}" — ${ok} sent, ${err} error${err!==1?'s':''}.`,err===0?'success':'error');
 }
 
@@ -1016,42 +1003,22 @@ let fUser='';
 function buildFUserList(f=''){
   const allUsers=[...new Set(hist.map(b=>b.importedBy).filter(Boolean))].sort();
   const items=allUsers.filter(u=>!f||u.toLowerCase().includes(f.toLowerCase()));
-  document.getElementById('f-user-list').innerHTML=
-    `<div class="sel-opt${!fUser?' selected':''}" onclick="pickFUser('')">— All users —<span class="ck">✓</span></div>`+
-    items.map(u=>`<div class="sel-opt${fUser===u?' selected':''}" onclick="pickFUser('${esc(u)}')">${esc(u)}<span class="ck">✓</span></div>`).join('');
+  document.getElementById('f-user-list').innerHTML=`<div class="sel-opt${!fUser?' selected':''}" onclick="pickFUser('')">— All users —<span class="ck">✓</span></div>`+items.map(u=>`<div class="sel-opt${fUser===u?' selected':''}" onclick="pickFUser('${esc(u)}')">${esc(u)}<span class="ck">✓</span></div>`).join('');
 }
 function toggleFUserSel(){
   const dd=document.getElementById('f-user-dd'),tr=document.getElementById('f-user-trig');
-  const open=dd.style.display!=='none';
-  dd.style.display=open?'none':'block';tr.classList.toggle('open',!open);
+  const open=dd.style.display!=='none';dd.style.display=open?'none':'block';tr.classList.toggle('open',!open);
   if(!open){document.getElementById('f-user-srch').value='';buildFUserList();setTimeout(()=>document.getElementById('f-user-srch').focus(),50);}
 }
 function filterFUserList(v){buildFUserList(v);}
-function pickFUser(u){
-  fUser=u;
-  const el=document.getElementById('f-user-val');el.textContent=u?u:'👤 Filter by user…';el.classList.toggle('sel-ph',!u);
-  document.getElementById('f-user-trig').classList.remove('open');
-  document.getElementById('f-user-dd').style.display='none';
-  filterHist();
-}
-function clearFilters(){
-  fUser='';calSelected='';
-  document.getElementById('f-search').value='';
-  clearCalDate();
-  const el=document.getElementById('f-user-val');el.textContent='👤 Filter by user…';el.classList.add('sel-ph');
-  document.getElementById('f-user-trig').classList.remove('open','selected');
-  filterHist();
-}
+function pickFUser(u){fUser=u;const el=document.getElementById('f-user-val');el.textContent=u?u:'👤 Filter by user…';el.classList.toggle('sel-ph',!u);document.getElementById('f-user-trig').classList.remove('open');document.getElementById('f-user-dd').style.display='none';filterHist();}
+function clearFilters(){fUser='';calSelected='';document.getElementById('f-search').value='';clearCalDate();const el=document.getElementById('f-user-val');el.textContent='👤 Filter by user…';el.classList.add('sel-ph');document.getElementById('f-user-trig').classList.remove('open','selected');filterHist();}
 function filterHist(){
   const search=document.getElementById('f-search').value.trim().toLowerCase();
   const filtered=hist.filter(b=>{
     if(search&&!b.name.toLowerCase().includes(search))return false;
     if(fUser&&b.importedBy!==fUser)return false;
-    if(calSelected){
-      const parts=b.date.split(/[\/,\s:]+/);
-      const bDateStr=`${parts[2]}-${parts[1].padStart(2,'0')}-${parts[0].padStart(2,'0')}`;
-      if(bDateStr!==calSelected)return false;
-    }
+    if(calSelected){const parts=b.date.split(/[\/,\s:]+/);const bDateStr=`${parts[2]}-${parts[1].padStart(2,'0')}-${parts[0].padStart(2,'0')}`;if(bDateStr!==calSelected)return false;}
     return true;
   });
   document.getElementById('hist-empty').style.display=hist.length===0?'block':'none';
@@ -1063,56 +1030,22 @@ function renderHistList(items){
     <div class="bcard" id="bc${b.id}">
       <div class="bcard-hd" onclick="toggleB(${b.id})">
         <div class="bcard-ico">📦</div>
-        <div class="bcard-meta">
-          <div class="bcard-name">${esc(b.name)}</div>
-          <div class="bcard-sub">${b.date} · by <strong>${esc(b.importedBy||'—')}</strong></div>
-        </div>
-        <div class="bcard-pills">
-          <span class="pill pill-t">${b.total} lead${b.total!==1?'s':''}</span>
-          ${b.ok?`<span class="pill pill-ok">✅ ${b.ok}</span>`:''}
-          ${b.err?`<span class="pill pill-err">❌ ${b.err}</span>`:''}
-        </div>
+        <div class="bcard-meta"><div class="bcard-name">${esc(b.name)}</div><div class="bcard-sub">${b.date} · by <strong>${esc(b.importedBy||'—')}</strong></div></div>
+        <div class="bcard-pills"><span class="pill pill-t">${b.total} lead${b.total!==1?'s':''}</span>${b.ok?`<span class="pill pill-ok">✅ ${b.ok}</span>`:''}${b.err?`<span class="pill pill-err">❌ ${b.err}</span>`:''}</div>
         <span class="bcard-chev">▶</span>
       </div>
-      <div class="bcard-bd">
-        <table class="btbl">
-          <thead><tr><th>First</th><th>Last</th><th>LinkedIn</th><th>Company</th><th>Job Title</th><th>Owner</th><th>Status</th></tr></thead>
-          <tbody>${b.leads.map(l=>`<tr>
-            <td>${esc(l.firstName||'')}</td><td>${esc(l.lastName||'')}</td>
-            <td title="${esc(l.linkedinUrl)}">${esc(l.linkedinUrl)}</td>
-            <td title="${esc(l.companyLinkedinUrl)}">${esc(l.companyLinkedinUrl)}</td>
-            <td>${esc(l.jobTitle||'—')}</td>
-            <td>${esc(l.ownerName||'')}</td>
-            <td class="${l.status==='sent'?'s-ok':'s-err'}">${l.status==='sent'?'✅ Sent':'❌ Error'}</td>
-          </tr>`).join('')}</tbody>
-        </table>
-      </div>
+      <div class="bcard-bd"><table class="btbl"><thead><tr><th>First</th><th>Last</th><th>LinkedIn</th><th>Company</th><th>Job Title</th><th>Owner</th><th>Status</th></tr></thead>
+        <tbody>${b.leads.map(l=>`<tr><td>${esc(l.firstName||'')}</td><td>${esc(l.lastName||'')}</td><td title="${esc(l.linkedinUrl)}">${esc(l.linkedinUrl)}</td><td title="${esc(l.companyLinkedinUrl)}">${esc(l.companyLinkedinUrl)}</td><td>${esc(l.jobTitle||'—')}</td><td>${esc(l.ownerName||'')}</td><td class="${l.status==='sent'?'s-ok':'s-err'}">${l.status==='sent'?'✅ Sent':'❌ Error'}</td></tr>`).join('')}</tbody>
+      </table></div>
     </div>`).join('');
 }
 
-// ── TABLE SELECT (owner per row) ───────────────────────
+// ── TABLE SELECT ───────────────────────────────────────
 let openTsel=null;
-function closeTsel(){
-  if(openTsel){document.getElementById('tdd-'+openTsel)?.remove();document.getElementById('ttr-'+openTsel)?.classList.remove('open');openTsel=null;}
-}
-function renderTsel(id,lead){
-  const val=lead.user,inv=lead._t&&!val?' inv':'';
-  return`<div class="tsel-wrap"><div class="tsel-trigger${inv}" id="ttr-${id}" onclick="toggleTsel(${id},this)" tabindex="0"><span class="tsel-val${val?'':' tsel-ph'}">${val?esc(val):'— Select owner —'}</span><span class="tsel-arr">▾</span></div></div>`;
-}
-function toggleTsel(id,el){
-  if(openTsel===id){closeTsel();return;}closeTsel();openTsel=id;el.classList.add('open');
-  const lead=leads.find(l=>l.id===id);const rect=el.getBoundingClientRect();
-  const dd=document.createElement('div');dd.className='tsel-dd';dd.id='tdd-'+id;
-  dd.style.cssText=`top:${rect.bottom+window.scrollY+4}px;left:${rect.left}px`;
-  dd.innerHTML=`<div class="tsel-search"><input type="text" placeholder="Search…" oninput="filterTsel(${id},this.value)" id="tsi-${id}"></div><div class="tsel-list" id="tsl-${id}"></div>`;
-  document.body.appendChild(dd);buildTselList(id,'',lead.user);
-  setTimeout(()=>document.getElementById('tsi-'+id)?.focus(),40);
-}
-function buildTselList(id,f,cur){
-  const list=document.getElementById('tsl-'+id);if(!list)return;
-  const items=USERS.filter(u=>!f||u.name.toLowerCase().includes(f.toLowerCase()));
-  list.innerHTML=items.map(u=>`<div class="tsel-opt${cur===u.name?' sel':''}" onclick="pickTsel(${id},'${esc(u.name)}')">${esc(u.name)}${cur===u.name?'<span>✓</span>':''}</div>`).join('');
-}
+function closeTsel(){if(openTsel){document.getElementById('tdd-'+openTsel)?.remove();document.getElementById('ttr-'+openTsel)?.classList.remove('open');openTsel=null;}}
+function renderTsel(id,lead){const val=lead.user,inv=lead._t&&!val?' inv':'';return`<div class="tsel-wrap"><div class="tsel-trigger${inv}" id="ttr-${id}" onclick="toggleTsel(${id},this)" tabindex="0"><span class="tsel-val${val?'':' tsel-ph'}">${val?esc(val):'— Select owner —'}</span><span class="tsel-arr">▾</span></div></div>`;}
+function toggleTsel(id,el){if(openTsel===id){closeTsel();return;}closeTsel();openTsel=id;el.classList.add('open');const lead=leads.find(l=>l.id===id);const rect=el.getBoundingClientRect();const dd=document.createElement('div');dd.className='tsel-dd';dd.id='tdd-'+id;dd.style.cssText=`top:${rect.bottom+window.scrollY+4}px;left:${rect.left}px`;dd.innerHTML=`<div class="tsel-search"><input type="text" placeholder="Search…" oninput="filterTsel(${id},this.value)" id="tsi-${id}"></div><div class="tsel-list" id="tsl-${id}"></div>`;document.body.appendChild(dd);buildTselList(id,'',lead.user);setTimeout(()=>document.getElementById('tsi-'+id)?.focus(),40);}
+function buildTselList(id,f,cur){const list=document.getElementById('tsl-'+id);if(!list)return;const items=USERS.filter(u=>!f||u.name.toLowerCase().includes(f.toLowerCase()));list.innerHTML=items.map(u=>`<div class="tsel-opt${cur===u.name?' sel':''}" onclick="pickTsel(${id},'${esc(u.name)}')">${esc(u.name)}${cur===u.name?'<span>✓</span>':''}</div>`).join('');}
 function filterTsel(id,v){const l=leads.find(l=>l.id===id);buildTselList(id,v,l?l.user:'');}
 function pickTsel(id,u){const l=leads.find(l=>l.id===id);if(!l)return;l._t=true;l.user=u;closeTsel();render();footer();btn();}
 
@@ -1125,45 +1058,23 @@ function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').repla
 function onInput(id,f,el){const l=leads.find(l=>l.id===id);if(!l)return;l[f]=el.value;if(l._t&&f!=='jobTitle')el.classList.toggle('inv',!el.value.trim());footer();btn();}
 function onBlur(id,f,el){const l=leads.find(l=>l.id===id);if(!l)return;l._t=true;l[f]=el.value.trim();el.value=l[f];if(f!=='jobTitle')el.classList.toggle('inv',!l[f]);footer();btn();}
 function render(){
-  const body=document.getElementById('leads-body');
   document.getElementById('empty-state').style.display=leads.length?'none':'block';
-  body.innerHTML=leads.map((l,i)=>`<tr>
+  document.getElementById('leads-body').innerHTML=leads.map((l,i)=>`<tr>
     <td class="num">${i+1}</td>
-    <td><input class="ci${l._t&&!l.firstName?' inv':''}" value="${esc(l.firstName)}" placeholder="Jean"
-      oninput="onInput(${l.id},'firstName',this)" onblur="onBlur(${l.id},'firstName',this)"></td>
-    <td><input class="ci${l._t&&!l.lastName?' inv':''}" value="${esc(l.lastName)}" placeholder="Dupont"
-      oninput="onInput(${l.id},'lastName',this)" onblur="onBlur(${l.id},'lastName',this)"></td>
-    <td><input class="ci${l._t&&!l.linkedinUrl?' inv':''}" value="${esc(l.linkedinUrl)}" placeholder="https://linkedin.com/in/…"
-      oninput="onInput(${l.id},'linkedinUrl',this)" onblur="onBlur(${l.id},'linkedinUrl',this)"></td>
-    <td><input class="ci${l._t&&!l.companyUrl?' inv':''}" value="${esc(l.companyUrl)}" placeholder="https://linkedin.com/company/…"
-      oninput="onInput(${l.id},'companyUrl',this)" onblur="onBlur(${l.id},'companyUrl',this)"></td>
-    <td><input class="ci" value="${esc(l.jobTitle||'')}" placeholder="e.g. Sales Manager"
-      oninput="onInput(${l.id},'jobTitle',this)" onblur="onBlur(${l.id},'jobTitle',this)"></td>
+    <td><input class="ci${l._t&&!l.firstName?' inv':''}" value="${esc(l.firstName)}" placeholder="Jean" oninput="onInput(${l.id},'firstName',this)" onblur="onBlur(${l.id},'firstName',this)"></td>
+    <td><input class="ci${l._t&&!l.lastName?' inv':''}" value="${esc(l.lastName)}" placeholder="Dupont" oninput="onInput(${l.id},'lastName',this)" onblur="onBlur(${l.id},'lastName',this)"></td>
+    <td><input class="ci${l._t&&!l.linkedinUrl?' inv':''}" value="${esc(l.linkedinUrl)}" placeholder="https://linkedin.com/in/…" oninput="onInput(${l.id},'linkedinUrl',this)" onblur="onBlur(${l.id},'linkedinUrl',this)"></td>
+    <td><input class="ci${l._t&&!l.companyUrl?' inv':''}" value="${esc(l.companyUrl)}" placeholder="https://linkedin.com/company/…" oninput="onInput(${l.id},'companyUrl',this)" onblur="onBlur(${l.id},'companyUrl',this)"></td>
+    <td><input class="ci" value="${esc(l.jobTitle||'')}" placeholder="e.g. Sales Manager" oninput="onInput(${l.id},'jobTitle',this)" onblur="onBlur(${l.id},'jobTitle',this)"></td>
     <td>${renderTsel(l.id,l)}</td>
     <td class="sc">${isValid(l)?'🟢':'⚪'}</td>
     <td class="ac"><button class="db" onclick="removeRow(${l.id})">✕</button></td>
   </tr>`).join('');
   footer();btn();
 }
-function footer(){
-  const v=leads.filter(isValid).length;
-  document.getElementById('footer-info').textContent=`${leads.length} lead${leads.length!==1?'s':''} · ${v} valid · ${leads.length-v} incomplete`;
-}
-function btn(){
-  const b=document.getElementById('send-btn');
-  const ready=leads.length>0&&leads.every(isValid);
-  b.disabled=!ready;
-  b.title=ready?'':'Fill all required fields before continuing.';
-}
-
-// ── NAVIGATION ─────────────────────────────────────────
-function goHome(){
-  document.getElementById('view-import').classList.remove('active');
-  document.getElementById('view-home').classList.add('active');
-  leads=[];idc=0;renderHome();
-}
-
-// ── HOME ───────────────────────────────────────────────
+function footer(){const v=leads.filter(isValid).length;document.getElementById('footer-info').textContent=`${leads.length} lead${leads.length!==1?'s':''} · ${v} valid · ${leads.length-v} incomplete`;}
+function btn(){const b=document.getElementById('send-btn');const ready=leads.length>0&&leads.every(isValid);b.disabled=!ready;b.title=ready?'':'Fill all required fields before continuing.';}
+function goHome(){document.getElementById('view-import').classList.remove('active');document.getElementById('view-home').classList.add('active');leads=[];idc=0;renderHome();}
 function renderHome(){
   document.getElementById('s-imp').textContent=hist.length;
   document.getElementById('s-leads').textContent=hist.reduce((a,b)=>a+b.total,0);
@@ -1171,27 +1082,13 @@ function renderHome(){
   document.getElementById('hist-badge').textContent=hist.length;
   document.getElementById('hist-empty').style.display=hist.length?'none':'block';
   document.getElementById('hist-no-results').style.display='none';
-  document.getElementById('inprogress-list').innerHTML=activeJobs.map(j=>`
-    <div class="ip-card">
-      <div class="ip-spinner"><svg viewBox="0 0 34 34"><circle cx="17" cy="17" r="14"/><circle class="arc" cx="17" cy="17" r="14" stroke-dashoffset="22"/></svg></div>
-      <div class="ip-body">
-        <div class="ip-badge">Import in progress</div>
-        <div class="ip-name">${esc(j.name)}</div>
-        <div class="ip-by">By ${esc(j.by)}</div>
-        <div class="ip-msg">Your contacts are being imported into the CRM.<br>You'll receive a <strong>Slack message</strong> when the import is complete.</div>
-      </div>
-    </div>`).join('');
-  buildFUserList();
-  renderHistList(hist);
+  document.getElementById('inprogress-list').innerHTML=activeJobs.map(j=>`<div class="ip-card"><div class="ip-spinner"><svg viewBox="0 0 34 34"><circle cx="17" cy="17" r="14"/><circle class="arc" cx="17" cy="17" r="14" stroke-dashoffset="22"/></svg></div><div class="ip-body"><div class="ip-badge">Import in progress</div><div class="ip-name">${esc(j.name)}</div><div class="ip-by">By ${esc(j.by)}</div><div class="ip-msg">Your contacts are being imported into the CRM.<br>You'll receive a <strong>Slack message</strong> when the import is complete.</div></div></div>`).join('');
+  buildFUserList();renderHistList(hist);
 }
 function toggleB(id){document.getElementById('bc'+id).classList.toggle('open');}
-function toast(msg,type='info'){
-  const w=document.getElementById('tw');
-  const el=document.createElement('div');el.className='toast '+type;el.textContent=msg;
-  w.appendChild(el);setTimeout(()=>el.remove(),5000);
-}
+function toast(msg,type='info'){const w=document.getElementById('tw');const el=document.createElement('div');el.className='toast '+type;el.textContent=msg;w.appendChild(el);setTimeout(()=>el.remove(),5000);}
 
-renderHome();
+if(checkSession())renderHome();
 </script>
 </body>
 </html>
